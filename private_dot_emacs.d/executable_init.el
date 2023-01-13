@@ -380,8 +380,3 @@
 ;; load the work org file and agenda and set to daily view
 (find-file "~/org/tasks/work.org")
 (org-agenda nil "d") 
-
-;; added some comments - test
-;; test comments
-;; test
-;; test 2
