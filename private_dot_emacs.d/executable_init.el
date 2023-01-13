@@ -73,6 +73,15 @@
   :init (which-key-mode 1)
 )
 
+;; magit - chezmoi has dependency on magit
+(use-package magit
+  :ensure t
+)
+;; chezmoi
+(use-package chezmoi
+  :ensure t
+)
+
 ;; diary config
 (setq org-agenda-include-diary t)       ;; include diary entries in the agenda
 (setq diary-file "~/org/diary/diary")   ;; set the calendar file
@@ -93,7 +102,7 @@
  '(org-agenda-skip-deadline-prewarning-if-scheduled 'pre-scheduled)
  '(org-agenda-span 'day)
  '(package-selected-packages
-   '(ef-themes elpy plantuml-mode nord-theme alarm-clock 0blayout ox-hugo which-key org-superstar org-bars counsel ivy org-roam-ui simple-httpd websocket org-journal org-roam deft zenburn-theme try use-package magit))
+   '(chezmoi ef-themes elpy plantuml-mode nord-theme alarm-clock 0blayout ox-hugo which-key org-superstar org-bars counsel ivy org-roam-ui simple-httpd websocket org-journal org-roam deft zenburn-theme try use-package magit))
  '(webjump-sites
    '(("Emacs Home Page" . "www.gnu.org/software/emacs/emacs.html")
      ("Emacs Wiki" .
@@ -373,3 +382,6 @@
 (org-agenda nil "d") 
 
 ;; added some comments - test
+;; test comments
+;; test
+;; test 2
