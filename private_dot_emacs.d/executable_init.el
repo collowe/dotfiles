@@ -379,6 +379,3 @@
 ;; load the work org file and agenda and set to daily view
 (find-file "~/org/tasks/work.org")
 (org-agenda nil "d") 
-
-;; comment from chromebook
-;; adding another
