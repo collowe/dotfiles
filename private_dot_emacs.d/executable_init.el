@@ -1,7 +1,6 @@
 (require 'org)
 
 ;; Setup Repos
-(require 'package)
 (setq package-archives
       '(
 	("melpa" . "https://melpa.org/packages/")
@@ -381,4 +380,4 @@
 (find-file "~/org/tasks/work.org")
 (org-agenda nil "d") 
 
-;; comment from VM
+;; comment from chromebook
