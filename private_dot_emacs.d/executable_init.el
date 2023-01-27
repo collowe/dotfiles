@@ -352,6 +352,21 @@
 (define-key beancount-mode-map (kbd "C-c C-n") #'outline-next-visible-heading)
 (define-key beancount-mode-map (kbd "C-c C-p") #'outline-previous-visible-heading)
 
+;; elpy
+(use-package elpy
+  :ensure t
+  :init
+  (elpy-enable)
+)
+
+;; flycheck (syntax highlighting, uses pylint installed using pip)
+(use-package flycheck
+  :ensure t
+  :init (global-flycheck-mode))
+;;(when (require 'flycheck nil t)
+;;  (setq elpy-modules (delq 'elpy-module-flymake elpy-modules))
+;;  (add-hook 'elpy-mode-hook 'flycheck-mode))
+
 ;; Org Roam Protocol (needs to be after org-roam or errors occur)
 ;; server-start is required to stand up emacs as a server
 ;;(require 'org-roam-protocol)
