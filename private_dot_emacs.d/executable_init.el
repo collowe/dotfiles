@@ -75,7 +75,8 @@
 ;; magit - chezmoi has dependency on magit
 (use-package magit
   :ensure t
-)
+  )
+
 ;; chezmoi
 (use-package chezmoi
   :ensure t
@@ -108,13 +109,9 @@
       [simple-query "www.emacswiki.org" "www.emacswiki.org/cgi-bin/wiki/" ""])
      ("DuckDuckGo" .
       [simple-query "duckduckgo.com" "duckduckgo.com/?q=" ""])
-     ("Google" .
-      [simple-query "www.google.com" "www.google.com/search?q=" ""])
-     ("Google Groups" .
-      [simple-query "groups.google.com" "groups.google.com/groups?q=" ""])
      ("Wikipedia" .
       [simple-query "wikipedia.org" "wikipedia.org/wiki/" ""])
-     ("Dashboard" . "http://192.168.1.67:5005/"))))
+     ("Dashboard" . "http://dashboard.home/"))))
    
 ;; set the agenda files
 (setq org-agenda-files (list "~/org/tasks"
@@ -167,12 +164,6 @@
         ("p" "phone call"  entry (file+headline, (concat org-directory "/refile.org") "Phone Calls")
 	 "* PHONE %^{person} :PHONE:\n%U\n")	    
         ("j" "Journal Entries")
-        ("je" "General Entry" entry
-         (function org-journal-find-location)
-         "** %<%I:%M %p> - %^{Title} \n\n%?\n\n"
-         :tree-type day
-         :clock-in :clock-resume
-         :empty-lines 1)
         ("jj" "Journal" plain
          (function org-journal-find-location)
          "\n** %<%I:%M %p> - Journal :journal:\n\n%?\n\n"
@@ -282,11 +273,6 @@
 	 :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org"
 			    "#+title: ${title}\n")
 	 :unnarrowed t)
-	("l" "web-page-link" plain (function org-roam--capture-get-point)
-           "%?"
-           :file-name "${slug}"
-           :head "#+TITLE: ${title}\n"
-           :unnarrowed t)
 	)      
       )
 
@@ -363,34 +349,7 @@
 (use-package flycheck
   :ensure t
   :init (global-flycheck-mode))
-;;(when (require 'flycheck nil t)
-;;  (setq elpy-modules (delq 'elpy-module-flymake elpy-modules))
-;;  (add-hook 'elpy-mode-hook 'flycheck-mode))
-
-;; Org Roam Protocol (needs to be after org-roam or errors occur)
-;; server-start is required to stand up emacs as a server
-;;(require 'org-roam-protocol)
-;;(server-start)
-
-;; ox-hugo
-;;(use-package ox-hugo
-;;  :ensure t   ;Auto-install the package from Melpa
-;;  :pin melpa  ;`package-archives' should already have ("melpa" . "https://melpa.org/packages/")
-;;  :after ox)
-
-;; plantUML
-;;(setq org-plantuml-jar-path (expand-file-name "/home/col/PlantUML/plantuml.jar"))
-;;(setq plantuml-default-exec-mode 'jar)
-;;(setq plantuml-default-exec-mode 'executable)
-;;(setq plantuml-server-url "http://192.168.1.129:8010/plantuml")
-;;(add-to-list 'org-src-lang-modes '("plantuml" . plantuml))
-;;(org-babel-do-load-languages 'org-babel-load-languages '((plantuml . t)))
-
-;; gnus - newsgroups
-;;(setq user-full-name '"bikeflip")
-;;(setq user-mail-address '"yourname@email.invalid")
-;;(setq gnus-select-method '(nntp "news.eweka.nl"))
 
 ;; load the work org file and agenda and set to daily view
 (find-file "~/org/tasks/work.org")
-(org-agenda nil "d") 
+;;(org-agenda nil "d") 
