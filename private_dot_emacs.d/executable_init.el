@@ -5,6 +5,7 @@
       '(
 	("melpa" . "https://melpa.org/packages/")
         ("gnu" . "https://elpa.gnu.org/packages/")
+	("nongnu" . "https://elpa.nongnu.org/nongnu" )
         ("org" . "http://orgmode.org/elpa/")
 	)
       )
