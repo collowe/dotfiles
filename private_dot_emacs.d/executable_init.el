@@ -57,6 +57,25 @@
 ;; hide the markup/emphasis markers
 (setq org-hide-emphasis-markers t)
 
+;; --- Dired ---
+;; set the default listing switches to be more compact, sorted by size
+(setq dired-listing-switches "-lGghaS")
+
+;; function to get the combined file size of selected files in dired
+(defun dired-get-size ()
+(interactive)
+(let ((files (dired-get-marked-files)))
+  (with-temp-buffer
+    (apply 'call-process "/usr/bin/du" nil t nil "-sch" files)
+    (message "Size of all marked files: %s"
+             (progn
+               (re-search-backward "\\(^[0-9.,]+[A-Za-z]+\\).*total$")
+               (match-string 1))))))
+
+;; call get size function after dired loaded
+(eval-after-load "dired" '(progn
+  (define-key dired-mode-map (kbd "?") 'dired-get-size) )) 
+
 ;; refresh buffer if file changes on disk
 (setq global-auto-revert-mode t)
 
@@ -83,13 +102,18 @@
   :ensure t
 )
 
-;; diary config
+;; --- Diary ---
 (setq org-agenda-include-diary t)       ;; include diary entries in the agenda
 (setq diary-file "~/org/diary/diary")   ;; set the calendar file
 (setq calendar-latitude 53.842178)      ;; calendar location - lat
 (setq calendar-longitude -1.636099)     ;; calendar location - long
 (setq calendar-week-start-day 1)        ;; set calendar to start on Monday
 (setq mark-diary-entries-in-calendar t) ;; mark diary entries in calendar by default
+
+;; --- Agenda ---
+;; set the agenda files
+(setq org-agenda-files (list "~/org/tasks"
+			     "~/org/journal"))
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -113,36 +137,52 @@
      ("Wikipedia" .
       [simple-query "wikipedia.org" "wikipedia.org/wiki/" ""])
      ("Dashboard" . "http://dashboard.home/"))))
-   
-;; set the agenda files
-(setq org-agenda-files (list "~/org/tasks"
-			     "~/org/journal"))
 
+;; --- org-agenda ---
 ;; custom shortcut key for agenda
 (global-set-key (kbd "C-c a") 'org-agenda)
-;; shortcut for work org file
-(global-set-key (kbd "C-c w") 
-                (lambda () (interactive) (find-file "~/org/tasks/work.org")))
+
+;; Custom agenda command definitions
+(setq org-agenda-window-setup 'current-window)
+(setq org-agenda-custom-commands
+      (quote (
+               ("d" "Dashboard"
+		(
+		 (tags "+WORK+PRIORITY={A}"
+			((org-agenda-skip-function '(org-agenda-skip-entry-if 'todo '("TODO" "DONE" "CANX")))
+			 (org-agenda-overriding-header "High-priority unfinished tasks (WIP):")))
+		 (agenda "" nil)
+		 (todo "HOLD"
+		       ((org-agenda-overriding-header "Blocked Tasks")
+			(org-agenda-max-todos nil )))
+ 
+		 (todo "TODO"
+                       ((org-agenda-overriding-header "Unprocessed Journal Tasks")
+			(org-agenda-files '("~/org/journal")))
+                       (org-agenda-text-search-extra-files nil)))
+		)
+	       )
+	     )
+      )
+
 ;; Shortcut key for capture
 (global-set-key (kbd "C-c c") 'org-capture)
+
+;; --- org-journal ---
+(use-package org-journal
+  :ensure t
+  :defer t
+  :init
+  ;; Change default prefix key; needs to be set before loading org-journal
+  (setq org-journal-prefix-key "C-c j")
+  :config
+  (setq org-journal-dir "~/org/journal/" 
+	org-journal-file-format "%Y%m%d.org"
+        org-journal-date-format "%A, %d %B %Y")
+        org-journal-file-type 'daily)
+
 ;; shortcut key for journal
 (global-set-key (kbd "C-c j") 'org-journal-new-entry)
-
-(add-to-list 'auto-mode-alist '("\\.org\\'" . org-mode))
-(add-to-list 'load-path (expand-file-name "~/Org"))
-(add-to-list 'auto-mode-alist '("\\.\\(org\\|org_archive\\|txt\\)$" . org-mode))
-
-;; add a CLOSED timestamp for clocktable purposes
-(setq org-log-done 'time)
-
-;; TODO Keywords
-(setq org-todo-keywords '((type "TODO(t)" "NEXT(n)" "STRT(s)" "HOLD(h@/!)" "PROJ(p)" "|" "DONE(d!)" "CANX(c@)")))
-
-;; Refile
-(setq org-refile-targets '((org-agenda-files :maxlevel . 6 )))
-
-;; status and timestamps into drawer
-(setq org-log-into-drawer t)
 
 (defun org-journal-find-location ()
   ;; Open today's journal, but specify a non-nil prefix argument in order to
@@ -151,6 +191,26 @@
   (unless (eq org-journal-file-type 'daily)
     (org-narrow-to-subtree))
   (goto-char (point-max)))
+
+;; --- org ---
+(add-to-list 'auto-mode-alist '("\\.org\\'" . org-mode))
+(add-to-list 'load-path (expand-file-name "~/Org"))
+(add-to-list 'auto-mode-alist '("\\.\\(org\\|org_archive\\|txt\\)$" . org-mode))
+
+;; shortcut for work org file
+(global-set-key (kbd "C-c w") (lambda () (interactive) (find-file "~/org/tasks/work.org")))
+
+;; org TODO Keywords
+(setq org-todo-keywords '((type "TODO(t)" "NEXT(n)" "STRT(s)" "HOLD(h@/!)" "PROJ(p)" "|" "DONE(d!)" "CANX(c@)")))
+
+;; refile
+(setq org-refile-targets '((org-agenda-files :maxlevel . 6 )))
+
+;; add a CLOSED timestamp for clocktable purposes
+(setq org-log-done 'time)
+
+;; status and timestamps into drawer
+(setq org-log-into-drawer t)
 
 ;; Capture templates
 (setq org-capture-templates
@@ -196,54 +256,7 @@
 	)
  )
 
-;; ivy completion framework
-(use-package ivy
-  :ensure t
-  :diminish (ivy-mode . "")
-  :init (ivy-mode 1)
-  :config
-  ;; add ‘recentf-mode’ and bookmarks to ‘ivy-switch-buffer’.
-  (setq ivy-use-virtual-buffers t)
-  ;; number of result lines to display
-  (setq ivy-height 20)
-  ;; does not count candidates
-  (setq ivy-count-format "(%d/%d) ")
-)
-
-;; counsel (uses ivy) - use automatically
-(use-package counsel :ensure t
-  :bind*                           ; load counsel when pressed
-  (("M-x"     . counsel-M-x)       ; M-x use counsel
-   ("C-x C-f" . counsel-find-file) ; C-x C-f use counsel-find-file
-   ("C-x C-r" . counsel-recentf)   ; search recently edited files
-  )
-)
-
-;; swiper search
-(use-package swiper
-  :ensure try
-  :config
-  (progn
-    (ivy-mode 1)
-    (setq ivy-use-virtual-buffers t)
-    (global-set-key "\C-s" 'swiper)
-  )
-)
-
-;; org-journal
-(use-package org-journal
-  :ensure t
-  :defer t
-  :init
-  ;; Change default prefix key; needs to be set before loading org-journal
-  (setq org-journal-prefix-key "C-c j")
-  :config
-  (setq org-journal-dir "~/org/journal/" 
-	org-journal-file-format "%Y%m%d.org"
-        org-journal-date-format "%A, %d %B %Y")
-        org-journal-file-type 'daily)
-
-;; org-roam
+;; --- org-roam ---
 (use-package org-roam
       :ensure t
       :init
@@ -267,7 +280,6 @@
       (org-roam-setup)
 )
 
-
 (setq org-roam-capture-templates
       '(
 	("d" "default" plain "%?"
@@ -285,11 +297,41 @@
                                                   '(:immediate-finish t)))))
     (apply #'org-roam-node-insert args)))
 
-;; org-roam-ui
-;;(add-to-list 'load-path "~/.emacs.d/private/org-roam-ui")
-;;(load-library "org-roam-ui")
+;; --- ivy completion framework ---
+(use-package ivy
+  :ensure t
+  :diminish (ivy-mode . "")
+  :init (ivy-mode 1)
+  :config
+  ;; add ‘recentf-mode’ and bookmarks to ‘ivy-switch-buffer’.
+  (setq ivy-use-virtual-buffers t)
+  ;; number of result lines to display
+  (setq ivy-height 20)
+  ;; does not count candidates
+  (setq ivy-count-format "(%d/%d) ")
+)
 
-;; deft
+;; --- counsel --- (uses ivy) - use automatically
+(use-package counsel :ensure t
+  :bind*                           ; load counsel when pressed
+  (("M-x"     . counsel-M-x)       ; M-x use counsel
+   ("C-x C-f" . counsel-find-file) ; C-x C-f use counsel-find-file
+   ("C-x C-r" . counsel-recentf)   ; search recently edited files
+  )
+)
+
+;; --- swiper ---
+(use-package swiper
+  :ensure try
+  :config
+  (progn
+    (ivy-mode 1)
+    (setq ivy-use-virtual-buffers t)
+    (global-set-key "\C-s" 'swiper)
+  )
+)
+
+;; --- deft ---
 (use-package deft
   :ensure t
   :bind ("C-c n d" . deft)
@@ -299,39 +341,8 @@
 		deft-strip-summary-regexp ":PROPERTIES:\n\\(.+\n\\)+:END:\n"
 		deft-use-filename-as-title t
 		deft-recursive t))
-
-;; Custom agenda command definitions
-
-(setq org-agenda-window-setup 'current-window)
-(setq org-agenda-custom-commands
-      (quote (
-               ("d" "Dashboard"
-		(
-		 (tags "+WORK+PRIORITY={A}"
-			((org-agenda-skip-function '(org-agenda-skip-entry-if 'todo '("TODO" "DONE" "CANX")))
-			 (org-agenda-overriding-header "High-priority unfinished tasks (WIP):")))
-		 (agenda "" nil)
-		 (todo "HOLD"
-		       ((org-agenda-overriding-header "Blocked Tasks")
-			(org-agenda-max-todos nil )))
- 
-		 (todo "TODO"
-                       ((org-agenda-overriding-header "Unprocessed Journal Tasks")
-			(org-agenda-files '("~/org/journal")))
-                       (org-agenda-text-search-extra-files nil)))
-		)
-	       )
-	     )
-      )
      
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
-
-;; beancount
+;; --- beancount ---
 (add-to-list 'load-path "~/finances/beancount-mode-main/")
 (require 'beancount)
 (add-to-list 'auto-mode-alist '("\\.beancount\\'" . beancount-mode))
@@ -339,18 +350,25 @@
 (define-key beancount-mode-map (kbd "C-c C-n") #'outline-next-visible-heading)
 (define-key beancount-mode-map (kbd "C-c C-p") #'outline-previous-visible-heading)
 
-;; elpy
+;; --- elpy ---
 (use-package elpy
   :ensure t
   :init
   (elpy-enable)
-)
+  )
 
-;; flycheck (syntax highlighting, uses pylint installed using pip)
+;; use the standard python interpreter
+(setq python-shell-interpreter "python3"
+      python-shell-interpreter-args "-i")
+(setq elpy-rpc-virtualenv-path 'current)
+(setq elpy-rpc-python-command "python3")
+(setenv "PYTHONPATH" "/usr/bin/python3")
+
+;; --- flycheck --- (syntax highlighting, uses pylint installed using pip)
 (use-package flycheck
   :ensure t
   :init (global-flycheck-mode))
 
-;; load the work org file and agenda and set to daily view
+;; load the work org file 
 (find-file "~/org/tasks/work.org")
-;;(org-agenda nil "d") 
+
