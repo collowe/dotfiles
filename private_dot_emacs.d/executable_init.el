@@ -113,7 +113,8 @@
 ;; --- Agenda ---
 ;; set the agenda files
 (setq org-agenda-files (list "~/org/tasks"
-			     "~/org/journal"))
+			     "~/org/journal"
+			     "~/org/notes/project"))
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -258,10 +259,11 @@
 
 ;; --- org-roam ---
 (use-package org-roam
+      :after org
       :ensure t
       :init
       (setq org-roam-v2-ack t)
-      (setq org-roam-node-display-template "${tags:10} ${title:100}")
+      (setq org-roam-node-display-template "${title:*} ${tags:32}")
       :custom
       (org-roam-directory "~/org/notes")
       (org-roam-completion-everywhere t)
@@ -275,19 +277,26 @@
 		    ("C-c n o" . org-id-get-create)
 		    ("C-c n t" . org-roam-tag-add)
 		    ("C-c n a" . org-roam-alias-add)
-		    ("C-c n l" . org-roam-buffer-toggle))))
+		    ("C-c n l" . org-roam-buffer-toggle)
+		    ("C-c n c" . org-roam-capture))))
       :config
       (org-roam-setup)
 )
 
 (setq org-roam-capture-templates
-      '(
-	("d" "default" plain "%?"
+      '(("d" "default" plain "%?"
 	 :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org"
 			    "#+title: ${title}\n")
 	 :unnarrowed t)
-	)      
-      )
+	("h" "home project" plain "%?" :if-new
+	 (file+head "~/org/notes/project/%<%Y%m>-${slug}.org"
+                  "#+TITLE: ${title}\n#+DATE: %<%Y-%m-%d>\n#+FILETAGS: home-project\n\n")
+         :unnarrowed t)
+	("w" "work project" plain "%?" :if-new
+	 (file+head "~/org/notes/project/%<%Y%m>-${slug}.org"
+                  "#+title: ${title}\n#+created: %U\n#+filetags: work-project\n")
+         :unnarrowed t)))      
+  
 
 ;; Bind this to C-c n I
 (defun org-roam-node-insert-immediate (arg &rest args)
@@ -327,6 +336,7 @@
   (progn
     (ivy-mode 1)
     (setq ivy-use-virtual-buffers t)
+    (setq ivy-use-selectable-prompt t) ;; allow choose own option
     (global-set-key "\C-s" 'swiper)
   )
 )
