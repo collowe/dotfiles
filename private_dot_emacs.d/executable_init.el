@@ -27,6 +27,8 @@
 (setq inhibit-startup-screen t)
 (setq inhibit-startup-message t)
 (setq inhibit-splash-screen t)
+;; set default font
+(set-face-attribute 'default t :font "iosevka")
 ;; hide menus
 (tool-bar-mode 0)
 (tooltip-mode 0)
@@ -115,6 +117,12 @@
 (setq org-agenda-files (list "~/org/tasks"
 			     "~/org/journal"
 			     "~/org/notes/project"))
+
+(setq org-agenda-prefix-format
+      '((agenda . " %i %-10:c%?-12t% s") ;; '%-10' sets 10 char field width
+        (tags   . " %i %-12:c")
+        (todo   . " %i %-12:c")   
+        (search . " %i %-12:c")))
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -295,9 +303,11 @@
 	("w" "work project" plain "%?" :if-new
 	 (file+head "~/org/notes/project/%<%Y%m>-${slug}.org"
                   "#+title: ${title}\n#+created: %U\n#+filetags: work-project\n")
-         :unnarrowed t)))      
+         :unnarrowed t)
+	("m" "recurring meeting" plain "%?" :if-new
+          (file+head "~/org/notes/meeting/%<%Y%m>-${slug}.org" "#+title: ${title}\n#+created: %U\n#+filetags: :meeting:\n#+startup: overview\n")
+          :unnarrowed t)))      
   
-
 ;; Bind this to C-c n I
 (defun org-roam-node-insert-immediate (arg &rest args)
   (interactive "P")
