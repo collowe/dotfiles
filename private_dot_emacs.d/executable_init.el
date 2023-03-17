@@ -118,6 +118,7 @@
 			     "~/org/journal"
 			     "~/org/notes/project"))
 
+(setq org-agenda-hide-tags-regexp ".")
 (setq org-agenda-prefix-format
       '((agenda . " %i %-10:c%?-12t% s") ;; '%-10' sets 10 char field width
         (tags   . " %i %-12:c")
@@ -369,6 +370,29 @@
 (add-hook 'beancount-mode-hook #'outline-minor-mode)
 (define-key beancount-mode-map (kbd "C-c C-n") #'outline-next-visible-heading)
 (define-key beancount-mode-map (kbd "C-c C-p") #'outline-previous-visible-heading)
+
+;; --- EMMS ---
+;; EMMS basic configuration
+(require 'emms-setup)
+(emms-all)
+(emms-default-players)
+(setq emms-source-file-default-directory "/mnt/music/") ;; Change to your music folder
+
+;; --- Elfeed ---
+(use-package elfeed
+  :ensure t
+  :config
+  (setq elfeed-db-directory (expand-file-name "elfeed" user-emacs-directory)
+        elfeed-show-entry-switch 'display-buffer)
+  :bind
+  ("C-x w" . elfeed ))
+
+;; Configure Elfeed with org mode
+(use-package elfeed-org
+  :ensure t
+  :config
+  (elfeed-org)
+  (setq rmh-elfeed-org-files (list "~/org/elfeed.org")))
 
 ;; --- elpy ---
 (use-package elpy

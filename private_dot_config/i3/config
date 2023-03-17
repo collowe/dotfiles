@@ -110,7 +110,7 @@ bindsym $mod+a focus parent
 set $ws1 "1:  "
 set $ws2 "2:  "
 #set $ws3 "3:  Performance"
-set $ws3 "3"
+set $ws3 "3: "
 #set $ws4 "4:  Weather"
 set $ws4 "4"
 #set $ws5 "5:  File Browser"
@@ -124,6 +124,7 @@ set $ws10 "10"
 # default applications
 exec --no-startup-id i3-msg 'workspace $ws1; exec gnome-terminal'
 exec --no-startup-id i3-msg 'workspace $ws2; exec firefox'
+exec --no-startup-id i3.msg 'workspace $ws3; exec emacs'
 #exec --no-startup-id i3-msg 'workspace $ws3; exec gnome-system-monitor'
 #exec --no-startup-id i3-msg 'workspace $ws4; exec gnome-weather'
 #exec --no-startup-id i3-msg 'workspace $ws5; exec nautilus; workspace $ws1'
