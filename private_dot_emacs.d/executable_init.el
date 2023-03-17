@@ -382,8 +382,12 @@
 (use-package elfeed
   :ensure t
   :config
-  (setq elfeed-db-directory (expand-file-name "elfeed" user-emacs-directory)
-        elfeed-show-entry-switch 'display-buffer)
+  ;(setq elfeed-db-directory (expand-file-name "elfeed" user-emacs-directory)
+  (setq elfeed-show-entry-switch 'display-buffer)
+  
+  (setq elfeed-db-directory "~/.elfeed")
+  (setq elfeed-enclosure-default-dir (expand-file-name "~/Downloads"))
+  (elfeed-set-timeout 36000)
   :bind
   ("C-x w" . elfeed ))
 
