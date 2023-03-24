@@ -27,8 +27,6 @@
 (setq inhibit-startup-screen t)
 (setq inhibit-startup-message t)
 (setq inhibit-splash-screen t)
-;; set default font
-(set-face-attribute 'default t :font "iosevka")
 ;; hide menus
 (tool-bar-mode 0)
 (tooltip-mode 0)
@@ -48,6 +46,8 @@
 ;; disable any active themes
 (mapc #'disable-theme custom-enabled-themes)
 (load-theme 'ef-autumn :no-confirm)
+;; set default font
+(set-frame-font "Iosevka 11" nil t)
 
 ;; change bullets to be pretty
 (use-package org-superstar
@@ -120,7 +120,7 @@
 
 (setq org-agenda-hide-tags-regexp ".")
 (setq org-agenda-prefix-format
-      '((agenda . " %i %-10:c%?-12t% s") ;; '%-10' sets 10 char field width
+      '((agenda . " %i %-20:c%?-12t% s") ;; '%-10' sets 10 char field width
         (tags   . " %i %-12:c")
         (todo   . " %i %-12:c")   
         (search . " %i %-12:c")))
@@ -388,6 +388,7 @@
   (setq elfeed-db-directory "~/.elfeed")
   (setq elfeed-enclosure-default-dir (expand-file-name "~/Downloads"))
   (elfeed-set-timeout 36000)
+  (setq elfeed-search-title-max-width 100)
   :bind
   ("C-x w" . elfeed ))
 
