@@ -78,6 +78,11 @@
 (eval-after-load "dired" '(progn
   (define-key dired-mode-map (kbd "?") 'dired-get-size) )) 
 
+;; set default apps
+;;(setq org-file-apps
+;;      '(("\\.ods\\'" \.system)
+;;	(auto-mode . emacs)))
+
 ;; refresh buffer if file changes on disk
 (setq global-auto-revert-mode t)
 
@@ -388,9 +393,29 @@
   (setq elfeed-db-directory "~/.elfeed")
   (setq elfeed-enclosure-default-dir (expand-file-name "~/Downloads"))
   (elfeed-set-timeout 36000)
-  (setq elfeed-search-title-max-width 100)
+  ;(setq elfeed-search-title-max-width 100)
+  (setq elfeed-search-title-max-width 150)
+  (setq elfeed-search-trailing-width 30)
   :bind
   ("C-x w" . elfeed ))
+
+; play YouTube videos with MPV
+(defun elfeed-play-with-mpv ()
+  "Play entry link with mpv."
+  (interactive)
+  (let ((entry (if (eq major-mode 'elfeed-show-mode) elfeed-show-entry (elfeed-search-selected :single)))
+        (quality-arg "")
+        )
+    (message "Opening %s with mpv..." (elfeed-entry-link entry))
+    (start-process "elfeed-mpv" nil "mpv" (elfeed-entry-link entry))))
+
+(defvar elfeed-mpv-patterns
+  '("youtu\\.?be")
+  "List of regexp to match against elfeed entry link to know whether to use mpv to visit the link.")
+
+; Open in mpv when o is pressed:
+(eval-after-load 'elfeed-search
+ '(define-key elfeed-search-mode-map (kbd "o") 'elfeed-play-with-mpv))
 
 ;; Configure Elfeed with org mode
 (use-package elfeed-org

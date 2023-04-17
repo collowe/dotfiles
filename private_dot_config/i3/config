@@ -51,6 +51,10 @@ bindsym $mod+Return exec i3-sensible-terminal
 # kill focused window
 bindsym $mod+Shift+q kill
 
+# app shortcuts
+#bindsym $super+Shift+e exec emacs
+#bindsym $super+pXS "exec firefox"
+
 # start dmenu (a program launcher)
 #bindsym $mod+d exec --no-startup-id dmenu_run
 # A more modern dmenu replacement is rofi:
@@ -112,13 +116,10 @@ bindsym $mod+a focus parent
 
 # Define names for default workspaces for which we configure key bindings later on.
 # We use variables to avoid repeating the names in multiple places.
-set $ws1 "1:  "
-set $ws2 "2:  "
-#set $ws3 "3:  Performance"
-set $ws3 "3: "
-#set $ws4 "4:  Weather"
+set $ws1 "1"
+set $ws2 "2"
+set $ws3 "3"
 set $ws4 "4"
-#set $ws5 "5:  File Browser"
 set $ws5 "5"
 set $ws6 "6"
 set $ws7 "7"
@@ -129,10 +130,10 @@ set $ws10 "10"
 # Redshift Applet
 exec --no-startup-id redshift-gtk -l 53.8426:-1.63754
 
-# default applications
+# default applications - autostart
 exec --no-startup-id i3-msg 'workspace $ws1; exec gnome-terminal'
 exec --no-startup-id i3-msg 'workspace $ws2; exec firefox'
-exec --no-startup-id i3.msg 'workspace $ws3; exec emacs'
+exec --no-startup-id i3-msg 'workspace $ws3; exec /usr/bin/emacs'
 #exec --no-startup-id i3-msg 'workspace $ws3; exec gnome-system-monitor'
 #exec --no-startup-id i3-msg 'workspace $ws4; exec gnome-weather'
 #exec --no-startup-id i3-msg 'workspace $ws5; exec nautilus; workspace $ws1'
@@ -220,7 +221,16 @@ bar {
         font pango:OperatorMono Nerd Font 12
 	tray_padding 1
         strip_workspace_numbers yes
+	#separator_symbol ""
 }
 
 set $i3lockwall i3lock -i ~/Pictures/wallhaven-x662v3_1920x1080.png -t
 bindsym $mod+Ctrl+Shift+l exec --no-startup-id $i3lockwall
+
+# colour of border, background, text, indicator, and child_border
+#client.focused              #bf616a #2f343f #d8dee8 #bf616a #d8dee8
+#client.focused_inactive     #2f343f #2f343f #d8dee8 #2f343f #2f343f
+#client.unfocused            #2f343f #2f343f #d8dee8 #2f343f #2f343f
+#client.urgent               #2f343f #2f343f #d8dee8 #2f343f #2f343f
+#client.placeholder          #2f343f #2f343f #d8dee8 #2f343f #2f343f
+#client.background           #2f343f
