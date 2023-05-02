@@ -322,6 +322,22 @@
                                                   '(:immediate-finish t)))))
     (apply #'org-roam-node-insert args)))
 
+;; --- org-roam-ui ---
+(use-package org-roam-ui
+  :ensure t
+  :after org-roam
+  ;;         normally we'd recommend hooking orui after org-roam, but since org-roam does not have
+  ;;         a hookable mode anymore, you're advised to pick something yourself
+  ;;         if you don't care about startup time, use
+  :hook (after-init . org-roam-ui-mode)
+
+  :config
+  (setq org-roam-ui-sync-theme t
+        org-roam-ui-follow t
+        org-roam-ui-update-on-save t
+        org-roam-ui-open-on-start t))
+
+
 ;; --- ivy completion framework ---
 (use-package ivy
   :ensure t
@@ -383,9 +399,18 @@
 (emms-default-players)
 (setq emms-source-file-default-directory "/mnt/music/") ;; Change to your music folder
 
+;; --- Elfeed.org ---
+(use-package elfeed-org
+  :ensure t
+  :config
+  (elfeed-org)
+  (setq rmh-elfeed-org-files (list "~/org/feeds/elfeed.org")))
+
 ;; --- Elfeed ---
 (use-package elfeed
   :ensure t
+  :bind
+  ("C-x w" . elfeed ))
   :config
   ;(setq elfeed-db-directory (expand-file-name "elfeed" user-emacs-directory)
   (setq elfeed-show-entry-switch 'display-buffer)
@@ -396,8 +421,6 @@
   ;(setq elfeed-search-title-max-width 100)
   (setq elfeed-search-title-max-width 150)
   (setq elfeed-search-trailing-width 30)
-  :bind
-  ("C-x w" . elfeed ))
 
 ; play YouTube videos with MPV
 (defun elfeed-play-with-mpv ()
@@ -416,13 +439,6 @@
 ; Open in mpv when o is pressed:
 (eval-after-load 'elfeed-search
  '(define-key elfeed-search-mode-map (kbd "o") 'elfeed-play-with-mpv))
-
-;; Configure Elfeed with org mode
-(use-package elfeed-org
-  :ensure t
-  :config
-  (elfeed-org)
-  (setq rmh-elfeed-org-files (list "~/org/elfeed.org")))
 
 ;; --- elpy ---
 (use-package elpy
