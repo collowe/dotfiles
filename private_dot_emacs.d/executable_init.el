@@ -337,7 +337,6 @@
         org-roam-ui-update-on-save t
         org-roam-ui-open-on-start t))
 
-
 ;; --- ivy completion framework ---
 (use-package ivy
   :ensure t
@@ -458,6 +457,14 @@
 (use-package flycheck
   :ensure t
   :init (global-flycheck-mode))
+
+;; --- testing nov.el ---
+(use-package nov
+  :ensure t
+  :config
+  (setq nov-text-width 80)
+  )
+(add-to-list 'auto-mode-alist '("\\.epub\\'" . nov-mode))
 
 ;; load the work org file 
 (find-file "~/org/tasks/work.org")
