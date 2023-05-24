@@ -142,7 +142,7 @@
  '(org-agenda-skip-deadline-prewarning-if-scheduled 'pre-scheduled)
  '(org-agenda-span 'day)
  '(package-selected-packages
-   '(chezmoi ef-themes elpy plantuml-mode nord-theme alarm-clock 0blayout ox-hugo which-key org-superstar org-bars counsel ivy org-roam-ui simple-httpd websocket org-journal org-roam deft zenburn-theme try use-package magit))
+   '(nov chezmoi ef-themes elpy plantuml-mode nord-theme alarm-clock 0blayout ox-hugo which-key org-superstar org-bars counsel ivy org-roam-ui simple-httpd websocket org-journal org-roam deft zenburn-theme try use-package magit))
  '(webjump-sites
    '(("Emacs Home Page" . "www.gnu.org/software/emacs/emacs.html")
      ("Emacs Wiki" .
@@ -357,9 +357,10 @@
   (("M-x"     . counsel-M-x)       ; M-x use counsel
    ("C-x C-f" . counsel-find-file) ; C-x C-f use counsel-find-file
    ("C-x C-r" . counsel-recentf)   ; search recently edited files
+   ("C-x r b" . counsel-bookmark) ; bookmarks
   )
 )
-
+w
 ;; --- swiper ---
 (use-package swiper
   :ensure try
@@ -468,4 +469,3 @@
 
 ;; load the work org file 
 (find-file "~/org/tasks/work.org")
-
