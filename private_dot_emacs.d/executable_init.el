@@ -209,27 +209,16 @@
 ;; set default font
 (set-frame-font "Iosevka 11" nil t)
 
-;; https://gitlab.com/protesilaos/modus-themes
-(use-package modus-themes
-  :straight (modus-themes :type git
-                          :host gitlab
-                          :repo "protesilaos/modus-themes")
-  :config
-  ;(modus-themes-load-themes)
-  :init
-  (setq modus-themes-bold-constructs t
-        modus-themes-org-blocks 'gray-background
-        modus-themes-region '(bg-only no-extend accented)
-        modus-themes-prompts '(intense)
-        modus-themes-fringes '(intense)
-        modus-themes-hl-line '(accented)
-        modus-themes-paren-match '(bold intense)
-        modus-themes-syntax '(yellow-comments green-strings alt-syntax)
-        modus-themes-headings '((1 . (background overline))
-                                (2 . (background overline rainbow))
-                                (t . (background overline rainbow)))
-        modus-themes-scale-headings t))
-
+;; https://github.com/protesilaos/ef-themes
+(use-package ef-themes
+  :straight (ef-themes :type git
+		       :host gitlab
+		       :repo "protesilaos/ef-themes")
+   :config
+   ;; disable any active themes
+   (mapc #'disable-theme custom-enabled-themes)
+   (load-theme 'ef-autumn :no-confirm))
+ 
 ;; https://github.com/integral-dw/org-superstar-mode
 (use-package org-superstar
   :straight (org-superstar :type git
