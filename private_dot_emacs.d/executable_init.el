@@ -139,6 +139,10 @@
 ;; refresh buffer if file changes on disk
 (setq global-auto-revert-mode t)
 
+;; prevent backups (files ending ~)set backup directory
+(setq backup-directory-alist '(("." . "~/.emacs-backups")))
+;;(setq backup-inhibited t)
+
 ;; minor mode to remember recent files
 (recentf-mode 1)
 
@@ -322,15 +326,13 @@
   :init
   (setq org-roam-v2-ack t
         org-roam-node-display-template "${title:*} ${tags:32}"
-        org-roam-directory "~/org/notes"
-;;	org-roam-db-location (file-truename "~/org/roam/org-roam.db")
-;;	org-roam-file-extensions '("org" "md"))
-  ;;  (let ((directory (file-truename "~/org/notes/")))
-;;    (make-directory directory t)
-;;    (setq org-roam-directory directory
-;;          ;; Define a directory that does not change along with the Org-Roam folder
-	;;          vidbina-org-roam-root-directory directory))
-	)
+        org-roam-file-extensions '("org" "md")
+        org-roam-db-location (file-truename "~/org/notes/org-roam.db"))
+   (let ((directory (file-truename "~/org/notes/")))
+     (make-directory directory t)
+     (setq org-roam-directory directory
+     ;; Define a directory that does not change along with the Org-Roam folder
+     col-org-roam-root-directory directory))
   :config
   (org-roam-setup)
   (setq org-roam-capture-templates
@@ -349,20 +351,16 @@
 	("m" "recurring meeting" plain "%?" :if-new
           (file+head "~/org/notes/meeting/%<%Y%m>-${slug}.org" "#+title: ${title}\n#+created: %U\n#+filetags: :meeting:\n#+startup: overview\n")
           :unnarrowed t)))      
-
-  ;;  (org-roam-db-autosync-disable)
-
   :bind (("C-c n l" . org-roam-buffer-toggle)
          ("C-c n f" . org-roam-node-find)
          ("C-c n i" . org-roam-node-insert)
-	 ;;         ("C-c n u" . vidbina/org-roam-db-async-forced-sync)))
+	 ("C-c n I" . org-roam-node-insert-immediate)
          (:map org-mode-map
 	    ("C-c n o" . org-id-get-create)
 	    ("C-c n t" . org-roam-tag-add)
-	    ("C-c n a" . org-roam-alias-add))
-	 ))
+	    ("C-c n a" . org-roam-alias-add))))
   
-;; Bind this to C-c n I
+;; Insert a new org roam file and link without opening in a new bufferBound to C-c n I
 (defun org-roam-node-insert-immediate (arg &rest args)
   (interactive "P")
   (let ((args (cons arg args))
