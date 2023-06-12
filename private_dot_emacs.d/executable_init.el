@@ -168,7 +168,7 @@
 
 ;; prevent backups (files ending ~)set backup directory
 (setq backup-directory-alist '(("." . "~/.emacs-backups/backups/"))) 
-(setq auto-save-file-name-transforms '((".*" ,"~/.emacs-backups/saves/" t)))
+(setq auto-save-file-name-transforms `((".*" "~/.emacs-backups/saves/" t)))
 
 (setq backup-by-copying t    ; Don't delink hardlinks
       delete-old-versions t  ; Clean up the backups
@@ -176,6 +176,7 @@
       kept-new-versions 5    ; keep some new versions
       kept-old-versions 2)   ; and some old ones, too
 
+; --- helpful ---
 (use-package helpful
   :straight t
   :commands (helpful-callable
