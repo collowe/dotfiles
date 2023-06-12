@@ -23,13 +23,14 @@
   :init
   :bind 
   :config
-   (setq org-startup-folded t) 
+  (setq org-startup-folded t) 
   (setq org-hide-emphasis-markers t)
   (setq org-todo-keywords '((type "TODO(t)" "NEXT(n)" "STRT(s)" "HOLD(h@/!)" "PROJ(p)" "|" "DONE(d!)" "CANX(c@)")))
   (setq org-refile-targets '((org-agenda-files :maxlevel . 6 )))
   (setq org-log-done 'time)
   (setq org-log-into-drawer t)
-
+  (setq org-return-follows-link t)
+  
   (setq org-agenda-include-diary t)
   (setq org-agenda-files (list "~/org/tasks"
 			       "~/org/journal"
@@ -121,17 +122,22 @@
 
 ;; Interface
 ;; remove startup and splash screens
-(setq inhibit-startup-screen t)
-(setq inhibit-startup-message t)
-(setq inhibit-splash-screen t)
+(setq inhibit-startup-screen t)    ; no startup screen
+(setq inhibit-startup-message t)   ; no startup message
+(setq inhibit-splash-screen t)     ; no splash screen
+(defalias 'yes-or-no-p 'y-or-n-p)  ; y or n rather than yes or no
+(setq make-pointer-invisible t)    ; remove mouse pointer when typing
 ;; hide menus
 (tool-bar-mode 0)
 (tooltip-mode 0)
 (menu-bar-mode 0)
 (scroll-bar-mode 0)
-(global-visual-line-mode 1) ;; line wrap
-(electric-pair-mode 1) ;; insert matching delims
-(add-hook 'org-mode-hook 'org-indent-mode) ;; always use org-indent mode
+(global-visual-line-mode 1)       ; line wrap
+(global-hl-line-mode 1)           ; highlight current line
+(electric-pair-mode 1)            ; insert matching delims
+(add-hook 'org-mode-hook 'org-indent-mode) ; always use org-indent mode
+(recentf-mode 1)                  ; minor mode to remember recent files
+(save-place-mode nil)             ; save last place visited in file
 ;;(setq org-adapt-indentation t) ;; indent content under headers
 ;;(setq split-height-threshold nil) ;; horizontal split by default
 ;;(setq split-width-threshold 0) ;; horizontal split by default
@@ -139,15 +145,61 @@
 ;; refresh buffer if file changes on disk
 (setq global-auto-revert-mode t)
 
+(use-package all-the-icons
+  :if (display-graphic-p)
+  :straight t)
+
+(use-package doom-modeline
+  :straight t
+  ;; :if (not (display-graphic-p))
+  :init
+  (setq doom-modeline-env-enable-python nil)
+  (setq doom-modeline-env-enable-go nil)
+  (setq doom-modeline-buffer-encoding 'nondefault)
+  (setq doom-modeline-hud t)
+  (setq doom-modeline-persp-icon nil)
+  (setq doom-modeline-persp-name nil)
+  (setq doom-modeline-display-misc-in-all-mode-lines nil)
+  :config
+  (setq doom-modeline-minor-modes nil)
+  (setq doom-modeline-irc nil)
+  (setq doom-modeline-buffer-state-icon nil)
+  (doom-modeline-mode 1))
+
 ;; prevent backups (files ending ~)set backup directory
-(setq backup-directory-alist '(("." . "~/.emacs-backups")))
-;;(setq backup-inhibited t)
+(setq backup-directory-alist '(("." . "~/.emacs-backups/backups/"))) 
+(setq auto-save-file-name-transforms '((".*" ,"~/.emacs-backups/saves/" t)))
 
-;; minor mode to remember recent files
-(recentf-mode 1)
+(setq backup-by-copying t    ; Don't delink hardlinks
+      delete-old-versions t  ; Clean up the backups
+      version-control t      ; Use version numbers on backups,
+      kept-new-versions 5    ; keep some new versions
+      kept-old-versions 2)   ; and some old ones, too
 
-;; save last place visited in file
-(save-place-mode nil)
+(use-package helpful
+  :straight t
+  :commands (helpful-callable
+	     helpful-variable
+	     helpful-key
+	     helpful-macro
+	     helpful-function
+	     helpful-command))
+
+;; Note that the built-in `describe-function' includes both functions
+;; and macros. `helpful-function' is functions only, so we provide
+;; `helpful-callable' as a drop-in replacement.
+(global-set-key (kbd "C-h f") #'helpful-callable)
+(global-set-key (kbd "C-h v") #'helpful-variable)
+(global-set-key (kbd "C-h k") #'helpful-key)
+(global-set-key (kbd "C-h x") #'helpful-command)
+;; Lookup the current symbol at point. C-c C-d is a common keybinding
+;; for this in lisp modes.
+(global-set-key (kbd "C-c C-d") #'helpful-at-point)
+
+;; Look up *F*unctions (excludes macros).
+;; By default, C-h F is bound to `Info-goto-emacs-command-node'. Helpful
+;; already links to the manual, if a function is referenced there.
+(global-set-key (kbd "C-h F") #'helpful-function)
 
 ; https://github.com/minad/vertico
 (use-package vertico
@@ -243,22 +295,7 @@
 
 ;; --- Dired ---
 ;; set the default listing switches to be more compact, sorted by size
-(setq dired-listing-switches "-lGghaS")
-
-;; function to get the combined file size of selected files in dired
-(defun dired-get-size ()
-(interactive)
-(let ((files (dired-get-marked-files)))
-  (with-temp-buffer
-    (apply 'call-process "/usr/bin/du" nil t nil "-sch" files)
-    (message "Size of all marked files: %s"
-             (progn
-               (re-search-backward "\\(^[0-9.,]+[A-Za-z]+\\).*total$")
-               (match-string 1))))))
-
-;; call get size function after dired loaded
-(eval-after-load "dired" '(progn
-  (define-key dired-mode-map (kbd "?") 'dired-get-size) )) 
+;;(setq dired-listing-switches "-lGghaS")
 
 ;; backups - get backup files out of the way
 (setq auto-save-list-file-prefix nil)
@@ -266,6 +303,34 @@
       `(("*.*" . ,temporary-file-directory)))
 (setq auto-save-file-name-transforms
       `(("*.*" ,temporary-file-directory t)))
+
+;; --- Dired Additions ---
+(use-package diredfl
+  :straight t
+  :after (dired)
+  :config
+  (diredfl-global-mode 1))
+
+; allow filtering
+(use-package dired-filter
+  :straight t
+  :after (dired))
+
+; show icons in dired
+(use-package all-the-icons-dired
+  :straight t
+  ;;:if (not (or my/slow-ssh (not (display-graphic-p))))
+  :hook (dired-mode . (lambda ()
+			(unless (string-match-p "/gnu/store" default-directory)
+			  (all-the-icons-dired-mode))))
+  :config)
+
+; show directory sizes
+(use-package dired-du
+  :straight t
+  :commands (dired-du-mode)
+  :config
+  (setq dired-du-size-format t))
 
 ;; https://github.com/magit/magit.git
 (use-package magit
@@ -374,16 +439,11 @@
                          :host github
                          :repo "org-roam/org-roam-ui")
   :after org-roam
-  ;; normally we'd recommend hooking orui after org-roam, but since org-roam does not have
-  ;; a hookable mode anymore, you're advised to pick something yourself
-  ;; if you don't care about startup time, use
-  :hook (after-init . org-roam-ui-mode)
-
   :config
   (setq org-roam-ui-sync-theme t
         org-roam-ui-follow t
         org-roam-ui-update-on-save t
-        org-roam-ui-open-on-start t))
+	org-roam-ui-open-on-start nil))
 
 ;; ; https://org-roam.discourse.group/t/using-consult-ripgrep-with-org-roam-for-searching-notes/1226/8
 ;; (defun bms/org-roam-rg-search ()
