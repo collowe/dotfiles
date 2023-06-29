@@ -37,21 +37,21 @@
     (make-directory backup-dir)))
 
 ;; Backup files
-;(setq backup-by-copying t
-;      delete-old-versions t
-;      kept-new-versions 10
-;      kept-old-versions 0
-;      vc-make-backup-files t
-;      version-control t
-(setq      backup-directory-alist `((".*" . ,(cache-dir "backup"))))
+(setq backup-by-copying t
+      delete-old-versions t
+      kept-new-versions 10
+      kept-old-versions 0
+      vc-make-backup-files t
+      version-control t
+      backup-directory-alist `((".*" . ,(cache-dir "backup"))))
 
 ;; Auto-save files
- (let ((auto-save-dir (cache-dir "autosave/")))
-   (unless (file-exists-p auto-save-dir)
-     (make-directory auto-save-dir))
-   (setq auto-save-interval 20
-         auto-save-file-name-transforms
-         `((".*" ,auto-save-dir t))))
+(let ((auto-save-dir (cache-dir "autosave/")))
+  (unless (file-exists-p auto-save-dir)
+    (make-directory auto-save-dir))
+  (setq auto-save-interval 20
+        auto-save-file-name-transforms
+        `((".*" ,auto-save-dir t))))
 
 ;; (setq auto-save-list-file-prefix ; Prefix for generating auto-save-list-file-name
 ;;       (expand-file-name ".auto-save-list/.saves-" user-emacs-directory)
@@ -72,7 +72,7 @@
 
 ;; prevent backups (files ending ~) set backup directory
 ;; (setq backup-directory-alist `((".*" . "~/.emacs-backups/backups/"))) 
-;; (setq auto-save-file-name-transforms `((".*" ,auto-save-dir t))))
+;; (setq auto-save-file-name-transforms `((".*" ,"~/.emacs-backups/saves/" t)))
 
 ;; (setq backup-by-copying t    ; Don't delink hardlinks
 ;;       delete-old-versions t  ; Clean up the backups
@@ -240,7 +240,7 @@
   (setq doom-modeline-buffer-state-icon nil)
   (doom-modeline-mode 1))
 
-; --- helpful ---
+
 (use-package helpful
   :straight t
   :commands (helpful-callable
