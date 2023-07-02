@@ -37,61 +37,23 @@
     (make-directory backup-dir)))
 
 ;; Backup files
-;(setq backup-by-copying t
-;      delete-old-versions t
-;      kept-new-versions 10
-;      kept-old-versions 0
-;      vc-make-backup-files t
-;      version-control t
-(setq      backup-directory-alist `((".*" . ,(cache-dir "backup"))))
+(setq backup-by-copying t           ; Don't clobber symlinks
+      delete-old-versions t         ; Delete excess backup files silently
+      kept-new-versions 10          ; Number of new versions to keep
+      kept-old-versions 0           ; Number of old versions to keep
+      vc-make-backup-files t        ; No backup of files under version control
+      version-control t             ; Version numbers for backup files
+      delete-by-moving-to-trash t   ; delete files to trash
+      backup-directory-alist `((".*" . ,(cache-dir "backup"))))  ; backup dir
 
 ;; Auto-save files
  (let ((auto-save-dir (cache-dir "autosave/")))
    (unless (file-exists-p auto-save-dir)
      (make-directory auto-save-dir))
-   (setq auto-save-interval 20
+   (setq auto-save-interval 200
+	 auto-save-timeout 20
          auto-save-file-name-transforms
          `((".*" ,auto-save-dir t))))
-
-;; (setq auto-save-list-file-prefix ; Prefix for generating auto-save-list-file-name
-;;       (expand-file-name ".auto-save-list/.saves-" user-emacs-directory)
-;;       auto-save-default t        ; Auto-save every buffer that visits a file
-;;       auto-save-timeout 20       ; Number of seconds between auto-save
-;;       auto-save-interval 200)    ; Number of keystrokes between auto-saves
-
-;; (setq backup-directory-alist       ; File name patterns and backup directory names.
-;;       `(("." . ,(expand-file-name "backups" user-emacs-directory)))
-;;       make-backup-files t          ; Backup of a file the first time it is saved.
-;;       vc-make-backup-files t       ; No backup of files under version contr
-;;       backup-by-copying t          ; Don't clobber symlinks
-;;       version-control t            ; Version numbers for backup files
-;;       delete-old-versions t        ; Delete excess backup files silently
-;;       kept-old-versions 6          ; Number of old versions to keep
-;;       kept-new-versions 9          ; Number of new versions to keep
-;;       delete-by-moving-to-trash t) ; Delete files to trash
-
-;; prevent backups (files ending ~) set backup directory
-;; (setq backup-directory-alist `((".*" . "~/.emacs-backups/backups/"))) 
-;; (setq auto-save-file-name-transforms `((".*" ,auto-save-dir t))))
-
-;; (setq backup-by-copying t    ; Don't delink hardlinks
-;;       delete-old-versions t  ; Clean up the backups
-;;       version-control t      ; Use version numbers on backups,
-;;       kept-new-versions 5    ; keep some new versions
-;;       kept-old-versions 2)   ; and some old ones, too
-
-;; (let ((auto-saves (local-emacs-directory "auto-save-files/")))
-;;   (unless (file-exists-p auto-saves)
-;;     (make-directory auto-saves t))
-;;   (setq auto-save-list-file-prefix     (local-emacs-directory "auto-save-list/saves-")
-;;         auto-save-file-name-transforms `((".*" ,auto-saves t))
-;;         backup-directory-alist         `((".*" . ,(local-emacs-directory "backups")))
-;;         backup-by-copying              t
-;;         version-control                t
-;;         delete-old-versions            t
-;;         kept-new-versions              10
-;;         load-prefer-newer              t))
-
 
 (use-package org :straight (:type built-in)
   :init
@@ -361,13 +323,6 @@
 ;; --- Dired ---
 ;; set the default listing switches to be more compact, sorted by size
 ;;(setq dired-listing-switches "-lGghaS")
-
-;; backups - get backup files out of the way
-(setq auto-save-list-file-prefix nil)
-(setq backup-directory-alist
-      `(("*.*" . ,temporary-file-directory)))
-(setq auto-save-file-name-transforms
-      `(("*.*" ,temporary-file-directory t)))
 
 ;; --- Dired Additions ---
 (use-package diredfl
