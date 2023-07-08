@@ -55,6 +55,12 @@
          auto-save-file-name-transforms
          `((".*" ,auto-save-dir t))))
 
+;; bookmarks
+; set the default bookmark file
+(setq bookmark-default-file "~/org/bookmarks/bookmarks")
+; autosave bookmark file on change
+(setq bookmark-save-flag 1)
+
 (use-package org :straight (:type built-in)
   :init
   :bind 
@@ -502,6 +508,18 @@
    ("C-c n b" . consult-org-roam-backlinks)
    ("C-c n l" . consult-org-roam-forward-links)
    ("C-c n r" . consult-org-roam-search))
+
+(defun col/org-replace-link-by-link-description ()
+  "Replace an org link by its description or if empty its address"
+  (interactive)
+  (if (org-in-regexp org-bracket-link-regexp 1)
+      (save-excursion
+        (let ((remove (list (match-beginning 0) (match-end 0)))
+              (description (if (match-end 3) 
+                               (org-match-string-no-properties 3)
+                             (org-match-string-no-properties 1))))
+          (apply 'delete-region remove)
+          (insert description)))))
 
 ;; --- deft ---
 ;; (use-package deft
