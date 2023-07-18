@@ -596,6 +596,16 @@
 (eval-after-load 'elfeed-search
  '(define-key elfeed-search-mode-map (kbd "o") 'elfeed-play-with-mpv))
 
+; chat-gpt stuff - chatgpt-shell
+(use-package shell-maker
+  :straight (:host github :repo "xenodium/chatgpt-shell" :files ("shell-maker.el")))
+
+(use-package chatgpt-shell
+  :requires shell-maker
+  :straight (:host github :repo "xenodium/chatgpt-shell" :files ("chatgpt-shell.el")))
+
+(setq chatgpt-shell-openai-key "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")
+
 ;; (use-package pdf-tools
 ;;   ;;:defer t
 ;;   ;; stop pdf-tools being automatically updated when I update the
