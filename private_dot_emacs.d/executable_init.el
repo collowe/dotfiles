@@ -76,7 +76,7 @@
   (setq org-agenda-include-diary t)
   (setq org-agenda-files (list "~/org/tasks"
 			       "~/org/journal"
-			       "~/org/notes/project"))
+			       ))
 
   (setq org-agenda-hide-tags-regexp ".")
   (setq org-agenda-prefix-format
@@ -604,7 +604,11 @@
   :requires shell-maker
   :straight (:host github :repo "xenodium/chatgpt-shell" :files ("chatgpt-shell.el")))
 
-(setq chatgpt-shell-openai-key "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")
+;; lazy loaded api key (prevents unexpected passphrase prompt)
+;; stored in .authinfo
+(setq chatgpt-shell-openai-key
+      (lambda ()
+        (auth-source-pick-first-password :host "api.openai.com")))
 
 ;; (use-package pdf-tools
 ;;   ;;:defer t
