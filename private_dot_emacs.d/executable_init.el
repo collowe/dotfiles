@@ -55,6 +55,13 @@
          auto-save-file-name-transforms
          `((".*" ,auto-save-dir t))))
 
+;; european calendar please
+;(add-hook 'calendar-load-hook
+;	  (lambda ()
+;	    (calendar-set-date-style 'european)))
+(eval-after-load "calendar"
+  '(setq calendar-date-style 'european))
+
 ;; bookmarks
 ; set the default bookmark file
 (setq bookmark-default-file "~/org/bookmarks/bookmarks")
