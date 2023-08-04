@@ -56,11 +56,9 @@
          `((".*" ,auto-save-dir t))))
 
 ;; european calendar please
-;(add-hook 'calendar-load-hook
-;	  (lambda ()
-;	    (calendar-set-date-style 'european)))
 (eval-after-load "calendar"
   '(setq calendar-date-style 'european))
+(setq diary-date-forms diary-iso-date-forms)
 
 ;; bookmarks
 ; set the default bookmark file
