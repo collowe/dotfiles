@@ -55,10 +55,11 @@
          auto-save-file-name-transforms
          `((".*" ,auto-save-dir t))))
 
-;; european calendar please
+;; European calendar please
 (eval-after-load "calendar"
-  '(setq calendar-date-style 'european))
-(setq diary-date-forms diary-iso-date-forms)
+  '(setq calendar-date-style 'european
+	 diary-date-forms diary-iso-date-forms))
+
 
 ;; bookmarks
 ; set the default bookmark file
