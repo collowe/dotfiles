@@ -190,6 +190,9 @@
 ;;(setq split-height-threshold nil) ;; horizontal split by default
 ;;(setq split-width-threshold 0) ;; horizontal split by default
 
+(setq custom-file (locate-user-emacs-file "custom-vars.el")) ; use custom file location to keep init.el clean
+(load custom-file 'noerror 'nomessage)
+
 ;; refresh buffer if file changes on disk
 (setq global-auto-revert-mode t)
 
@@ -379,11 +382,11 @@
 )
 
 ;; --- Diary ---
-(setq diary-file "~/org/diary/diary")   ;; set the calendar file
-(setq calendar-latitude 53.842178)      ;; calendar location - lat
-(setq calendar-longitude -1.636099)     ;; calendar location - long
-(setq calendar-week-start-day 1)        ;; set calendar to start on Monday
-(setq mark-diary-entries-in-calendar t) ;; mark diary entries in calendar by default
+(setq diary-file "~/org/diary/diary")     ;; set the calendar file
+(setq calendar-latitude 53.842178)        ;; calendar location - lat
+(setq calendar-longitude -1.636099)       ;; calendar location - long
+(setq calendar-week-start-day 1)          ;; set calendar to start on Monday
+(setq calendar-mark-diary-entries-flag t) ;; mark diary entries in calendar by default
 
 ;; --- org-journal ---
 (use-package org-journal
