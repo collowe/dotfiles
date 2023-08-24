@@ -619,6 +619,19 @@
       (lambda ()
         (auth-source-pick-first-password :host "api.openai.com")))
 
+;; weather
+(use-package biome
+  :straight (:host github :repo "SqrtMinusOne/biome"))
+
+(setq biome-query-coords
+      '(("Horsforth, England" 53.84260000 -1.63754000)
+        ("Douglas, England" 55.5500000 -3.8500000)))
+
+;; (setq biome-query-coords
+;;       '(("Helsinki, Finland" 60.16952 24.93545)
+;;         ("Berlin, Germany" 52.52437 13.41053)
+;;         ("Dubai, UAE" 25.0657 55.17128)))
+
 ;; (use-package pdf-tools
 ;;   ;;:defer t
 ;;   ;; stop pdf-tools being automatically updated when I update the
