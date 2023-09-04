@@ -627,6 +627,10 @@
       '(("Horsforth, England" 53.84260000 -1.63754000)
         ("Douglas, England" 55.5500000 -3.8500000)))
 
+;;  Ement.
+(use-package ement
+  :straight (:host github :repo "alphapapa/ement.el"))
+
 ;; (setq biome-query-coords
 ;;       '(("Helsinki, Finland" 60.16952 24.93545)
 ;;         ("Berlin, Germany" 52.52437 13.41053)
