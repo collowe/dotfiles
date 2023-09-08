@@ -113,12 +113,12 @@
 			)
                        (org-agenda-text-search-extra-files nil)))))))
   (setq org-capture-templates
-      `(("t" "todo" entry (file ,(concat org-directory "/refile.org"))
-	     "* TODO %?\n")
-	("r" "respond" entry (file ,(concat org-directory "/refile.org"))
-	     "* TODO Respond to %^{person} on %^{subject}\n%U")
-	("n" "note"  entry (file+headline, (concat org-directory "/refile.org") "Notes")
-              "* %? :NOTE:\n%U")
+	`(("t" "todo" entry (file+headline ,(concat org-directory "/tasks/work.org") "Capture")
+	   "** TODO %?\n" :empty-lines 1)
+	;("r" "respond" entry (file ,(concat org-directory "/refile.org"))
+	;     "* TODO Respond to %^{person} on %^{subject}\n%U")
+	;("n" "note"  entry (file+headline, (concat org-directory "/refile.org") "Notes")
+        ;      "* %? :NOTE:\n%U")
 	("m" "meeting" entry (file+headline, (concat org-directory "/tasks/work.org") "Capture")
 	 "** Meeting: %^{SUBJECT}%? \n%^T\n*** Attendees\n*** Notes\n\n" :empty-lines 1)
         ("p" "phone call"  entry (file+headline, (concat org-directory "/tasks/work.org") "Capture")
@@ -412,7 +412,7 @@
   (goto-char (point-max)))
 
 (use-package emacsql-sqlite
-  :defer t
+  :defer
   :straight (:type built-in))
 
 ;; https://github.com/org-roam/org-roam
