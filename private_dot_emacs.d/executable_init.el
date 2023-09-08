@@ -19,7 +19,6 @@
 (straight-use-package 'use-package)
 (setq straight-use-package-by-default t)
 
-
 ;; Configure cache-dir
 (defvar cache-dir (expand-file-name "cache" user-emacs-directory)
   "Main cache directory which packages should be configured to use.")
@@ -60,14 +59,14 @@
   '(setq calendar-date-style 'european
 	 diary-date-forms diary-iso-date-forms))
 
-
 ;; bookmarks
 ; set the default bookmark file
 (setq bookmark-default-file "~/org/bookmarks/bookmarks")
 ; autosave bookmark file on change
 (setq bookmark-save-flag 1)
 
-(use-package org :straight (:type built-in)
+(use-package org
+  :straight (:type built-in)
   :init
   :bind 
   :config
@@ -81,15 +80,14 @@
   
   (setq org-agenda-include-diary t)
   (setq org-agenda-files (list "~/org/tasks"
-			       "~/org/journal"
-			       ))
+			       "~/org/journal"))
 
-  (setq org-agenda-hide-tags-regexp ".")
-  (setq org-agenda-prefix-format
-      '((agenda . " %i %-20:c%?-12t% s") ;; '%-10' sets 10 char field width
-        (tags   . " %i %-12:c")
-        (todo   . " %i %-12:c")   
-        (search . " %i %-12:c")))
+  ;(setq org-agenda-hide-tags-regexp ".")
+  ;(setq org-agenda-prefix-format
+  ;    '((agenda . " %i %-20:c%?-12t% s") ;; '%-10' sets 10 char field width
+  ;      (tags   . " %i %-12:c")
+  ;      (todo   . " %i %-12:c")   
+  ;      (search . " %i %-12:c")))
 
   (setq org-agenda-window-setup 'current-window)
   (setq org-agenda-custom-commands
@@ -121,39 +119,39 @@
 	     "* TODO Respond to %^{person} on %^{subject}\n%U")
 	("n" "note"  entry (file+headline, (concat org-directory "/refile.org") "Notes")
               "* %? :NOTE:\n%U")
-        ("m" "meeting" entry (file+headline, (concat org-directory "/refile.org") "Meetings")
-             "** %? :MEETING: \n %^T \n %^{Attendees}\n")
-        ("p" "phone call"  entry (file+headline, (concat org-directory "/refile.org") "Phone Calls")
-	 "* PHONE %^{person} :PHONE:\n%U\n")	    
-        ("j" "Journal Entries")
-        ("jj" "Journal" plain
-         (function org-journal-find-location)
-         "\n** %<%I:%M %p> - Journal :journal:\n\n%?\n\n"
-         :tree-type day
-         :clock-in :clock-resume
-         :empty-lines 1)
-        ("jt" "Task Entry" plain
-          (function org-journal-find-location)
-          "\n** %<%I:%M %p> - Task Notes: %a\n\n%?\n\n"
-          :tree-type day
-          :clock-in :clock-resume
-          :empty-lines 1)
-	("jd" "TODO" plain
-          (function org-journal-find-location)
-          "\n** TODO %?\n\n"
-          :tree-type day
-          :empty-lines 1)	 
-	("jm" "Meeting" plain
-	 (function org-journal-find-location)
-          "** TODO %<%Y%m%d> - Meeting: %^{SUBJECT}%? %(org-set-tags \"WORK\") \n%^T\n\n*** Attendees\n\n"
-          :tree-type day
-          :empty-lines 1)
-	("jp" "Phone Call" plain
-	 (function org-journal-find-location)
-          "\n** Phone Call: %^{PERSON}%?\n\n"
-          :tree-type day
-          :clock-in :clock-resume
-          :empty-lines 1)))
+	("m" "meeting" entry (file+headline, (concat org-directory "/tasks/work.org") "Capture")
+	 "** Meeting: %^{SUBJECT}%? \n%^T\n*** Attendees\n*** Notes\n\n" :empty-lines 1)
+        ("p" "phone call"  entry (file+headline, (concat org-directory "/tasks/work.org") "Capture")
+	 "** Phone %^{person} \n%U\n*** Notes\n\n" :empty-lines 1)))
+;        ("j" "Journal Entries")
+;        ("jj" "Journal" plain
+;         (function org-journal-find-location)
+;         "\n** %<%I:%M %p> - Journal :journal:\n\n%?\n\n"
+;         :tree-type day
+;         :clock-in :clock-resume
+;         :empty-lines 1)
+;        ("jt" "Task Entry" plain
+;          (function org-journal-find-location)
+;          "\n** %<%I:%M %p> - Task Notes: %a\n\n%?\n\n"
+;          :tree-type day
+;          :clock-in :clock-resume
+;          :empty-lines 1)
+;	("jd" "TODO" plain
+;          (function org-journal-find-location)
+;          "\n** TODO %?\n\n"
+;          :tree-type day
+;          :empty-lines 1)	 
+;	("jm" "Meeting" plain
+;	 (function org-journal-find-location)
+;          "** TODO %<%Y%m%d> - Meeting: %^{SUBJECT}%? %(org-set-tags \"WORK\") \n%^T\n\n*** Attendees\n\n"
+;          :tree-type day
+;          :empty-lines 1)
+;	("jp" "Phone Call" plain
+;	 (function org-journal-find-location)
+;          "\n** Phone Call: %^{PERSON}%?\n\n"
+;          :tree-type day
+;          :clock-in :clock-resume
+;          :empty-lines 1)))
   
   (global-set-key (kbd "C-c a") 'org-agenda)
   (global-set-key (kbd "C-c c") 'org-capture)
