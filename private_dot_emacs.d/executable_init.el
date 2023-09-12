@@ -123,35 +123,6 @@
 	 "** Meeting: %^{SUBJECT}%? \n%^T\n*** Attendees\n*** Notes\n\n" :empty-lines 1)
         ("p" "phone call"  entry (file+headline, (concat org-directory "/tasks/work.org") "Capture")
 	 "** Phone %^{person} \n%U\n*** Notes\n\n" :empty-lines 1)))
-;        ("j" "Journal Entries")
-;        ("jj" "Journal" plain
-;         (function org-journal-find-location)
-;         "\n** %<%I:%M %p> - Journal :journal:\n\n%?\n\n"
-;         :tree-type day
-;         :clock-in :clock-resume
-;         :empty-lines 1)
-;        ("jt" "Task Entry" plain
-;          (function org-journal-find-location)
-;          "\n** %<%I:%M %p> - Task Notes: %a\n\n%?\n\n"
-;          :tree-type day
-;          :clock-in :clock-resume
-;          :empty-lines 1)
-;	("jd" "TODO" plain
-;          (function org-journal-find-location)
-;          "\n** TODO %?\n\n"
-;          :tree-type day
-;          :empty-lines 1)	 
-;	("jm" "Meeting" plain
-;	 (function org-journal-find-location)
-;          "** TODO %<%Y%m%d> - Meeting: %^{SUBJECT}%? %(org-set-tags \"WORK\") \n%^T\n\n*** Attendees\n\n"
-;          :tree-type day
-;          :empty-lines 1)
-;	("jp" "Phone Call" plain
-;	 (function org-journal-find-location)
-;          "\n** Phone Call: %^{PERSON}%?\n\n"
-;          :tree-type day
-;          :clock-in :clock-resume
-;          :empty-lines 1)))
   
   (global-set-key (kbd "C-c a") 'org-agenda)
   (global-set-key (kbd "C-c c") 'org-capture)
@@ -180,13 +151,16 @@
 (scroll-bar-mode 0)
 (global-visual-line-mode 1)       ; line wrap
 (global-hl-line-mode 1)           ; highlight current line
+(setq sentence-end-double-space nil) ; single space sentences
+(delete-selection-mode t)         ; copy paste over existing text
 (electric-pair-mode 1)            ; insert matching delims
 (add-hook 'org-mode-hook 'org-indent-mode) ; always use org-indent mode
 (recentf-mode 1)                  ; minor mode to remember recent files
 (save-place-mode nil)             ; save last place visited in file
-;;(setq org-adapt-indentation t) ;; indent content under headers
-;;(setq split-height-threshold nil) ;; horizontal split by default
-;;(setq split-width-threshold 0) ;; horizontal split by default
+;;(setq org-adapt-indentation t)  ; indent content under headers
+(setq split-width-threshold nil)  ; vertical split by default
+(setq split-height-threshold 0)   ; vertical split by default
+(setq org-roam-buffer-position 'bottom) ; org roam buffers open horizontally
 
 (setq custom-file (locate-user-emacs-file "custom-vars.el")) ; use custom file location to keep init.el clean
 (load custom-file 'noerror 'nomessage)
@@ -336,6 +310,7 @@
 ;; --- Dired ---
 ;; set the default listing switches to be more compact, sorted by size
 ;;(setq dired-listing-switches "-lGghaS")
+(setq dired-auto-revert-buffer t) ; auto-update the dired buffer on revisit
 
 ;; --- Dired Additions ---
 (use-package diredfl
