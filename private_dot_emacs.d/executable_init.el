@@ -126,7 +126,8 @@
   
   (global-set-key (kbd "C-c a") 'org-agenda)
   (global-set-key (kbd "C-c c") 'org-capture)
-  (global-set-key (kbd "C-c w") (lambda () (interactive) (find-file "~/org/tasks/work.org"))))
+  (global-set-key (kbd "C-c w") (lambda () (interactive) (find-file "~/org/tasks/work.org")))
+  (global-set-key (kbd "C-c q") (lambda () (interactive) (find-file "~/org/tasks/home.org"))))
 
 ;;  '(org-agenda-skip-deadline-prewarning-if-scheduled 'pre-scheduled)
 ;;  '(org-agenda-span 'day)
@@ -654,12 +655,11 @@
 ;;   ;;                    )
 ;;   )
 
-;; ;; --- elpy ---
+;; --- elpy ---
 ;; (use-package elpy
 ;;   :ensure t
 ;;   :init
-;;   (elpy-enable)
-;;   )
+;;   (elpy-enable))
 
 ;; ;; use the standard python interpreter
 ;; (setq python-shell-interpreter "python3"
