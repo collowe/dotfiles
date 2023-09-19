@@ -162,6 +162,7 @@
 (setq split-width-threshold nil)  ; vertical split by default
 (setq split-height-threshold 0)   ; vertical split by default
 (setq org-roam-buffer-position 'bottom) ; org roam buffers open horizontally
+(setq use-short-answers t)        ; answer using y or n
 
 (setq custom-file (locate-user-emacs-file "custom-vars.el")) ; use custom file location to keep init.el clean
 (load custom-file 'noerror 'nomessage)
@@ -172,6 +173,11 @@
 (use-package all-the-icons
   :if (display-graphic-p)
   :straight t)
+
+; icons in autocompletion (vertico)
+(use-package all-the-icons-completion
+  :config
+  (all-the-icons-completion-mode))
 
 (use-package doom-modeline
   :straight t
@@ -226,6 +232,19 @@
   :config
 )
 
+; fuzzy matching in completion
+(use-package orderless
+  :custom
+  (orderless-matching-styles '(orderless-literal orderless-regexp orderless-flex))
+  (completion-styles '(orderless))
+  (completion-category-overrides '((file (styles partial-completion)))))
+
+; adds detail to completions
+(use-package marginalia
+  :straight t
+  :config
+  (marginalia-mode))
+
 ;; https://github.com/minad/consult
 (use-package consult
   :straight (consult :type git
@@ -270,6 +289,49 @@
                  args)))
 )
 
+; in region completions with Corfu
+(use-package corfu
+  :straight t
+  :custom
+  (corfu-min-width 80)
+  (corfu-max-width corfu-min-width)
+  (corfu-count 14)
+  (corfu-scroll-margin 4)
+  (corfu-cycle t)
+  (corfu-auto t)
+  (corfu-auto-delay 0.3)
+  (corfu-separator ?\s)
+  (corfu-quit-at-boundary nil)
+  (corfu-quit-no-match t)
+  (corfu-preview-current nil)
+  (corfu-preselect-first t)
+  (corfu-on-exact-match t)
+  (corfu-echo-documentation nil)
+  (corfu-popupinfo-mode 1)
+  ;:config
+  ;(set-face-attribute 'corfu-default nil
+  ;                    :background (nord-color "polar-night-0")
+  ;                    :foreground (nord-color "aurora-3"))
+  ;(set-face-attribute 'corfu-current nil
+  ;                    :background (nord-color "frost-3")
+  ;                    :foreground (nord-color "snow-storm-1"))
+  ;(set-face-attribute 'corfu-annotations nil
+  ;                    :foreground (nord-color "snow-storm-0"))
+  :init
+  (global-corfu-mode))
+
+(use-package kind-icon
+  :if (display-graphic-p)
+  :straight t
+  :after corfu
+  :custom
+  (kind-icon-use-icons t)
+  (kind-icon-default-face 'corfu-default)
+  (kind-icon-blend-background nil)
+  (kind-icon-blend-frac 0.08)
+  :config
+  (add-to-list 'corfu-margin-formatters #'kind-icon-margin-formatter))
+
 ;; set the theme using ef-themes
 ;; (use-package ef-themes
 ;;   :ensure t)
@@ -298,6 +360,10 @@
   :after org
   :hook (org-mode . org-superstar-mode)
 )
+
+; paste link with description
+(use-package org-cliplink)
+(global-set-key (kbd "C-x p i") 'org-cliplink)
 
 ;; https://github.com/justbur/emacs-which-key
 (use-package which-key
@@ -667,6 +733,36 @@
 ;; (setq elpy-rpc-virtualenv-path 'current)
 ;; (setq elpy-rpc-python-command "python3")
 ;; (setenv "PYTHONPATH" "/usr/bin/python3")
+
+;; Python
+;;
+;; Requires
+;;  pip3 install jedi autopep8 flake8 ipython importmagic yapf
+(use-package elpy
+  :straight t
+  :config
+  (elpy-enable)
+  (setq python-shell-interpreter "ipython"
+        python-shell-interpreter-args "-i --simple-prompt"))
+
+					; eshell
+(use-package eshell
+  :bind ("s-n" . eshell)
+  :demand t
+  :after corfu
+  :init (require 'eshell)
+  :config
+  (add-hook 'eshell-mode-hook
+            (lambda ()
+              (eshell/alias "ff" "find-file $1")
+              (eshell/alias "d" "dired $1")
+              (eshell/alias "less" "find-file-read-only $1")))
+
+  (add-hook 'eshell-mode-hook
+            (lambda ()
+              (setq-local corfu-auto nil)
+              (corfu-mode))))
+
 
 ;; ;; --- flycheck --- (syntax highlighting, uses pylint installed using pip)
 ;; (use-package flycheck
