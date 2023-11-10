@@ -163,6 +163,9 @@
 (setq split-height-threshold 0)   ; vertical split by default
 (setq org-roam-buffer-position 'bottom) ; org roam buffers open horizontally
 (setq use-short-answers t)        ; answer using y or n
+(setq isearch-lazy-count t)       ; enable hit count in isearch
+(setq lazy-count-prefix-format nil) ; better formatting in lazy search count
+(setq lazy-count-suffix-format "   (%s/%s)") ; better formatting in lazy search count
 
 (setq custom-file (locate-user-emacs-file "custom-vars.el")) ; use custom file location to keep init.el clean
 (load custom-file 'noerror 'nomessage)
@@ -340,18 +343,22 @@
 ;; (load-theme 'ef-autumn :no-confirm)
 
 ;; set default font
-(set-frame-font "Iosevka 11" nil t)
+(set-frame-font "Iosevka Light 16" nil t)
 
 ;; https://github.com/protesilaos/ef-themes
-(use-package ef-themes
-  :straight (ef-themes :type git
-		       :host gitlab
-		       :repo "protesilaos/ef-themes")
-   :config
-   ;; disable any active themes
-   (mapc #'disable-theme custom-enabled-themes)
-   (load-theme 'ef-autumn :no-confirm))
- 
+;; (use-package ef-themes
+;;   :straight (ef-themes :type git
+;; 		       :host gitlab
+;; 		       :repo "protesilaos/ef-themes")
+;;    :config
+;;    ;; disable any active themes
+;;    (mapc #'disable-theme custom-enabled-themes)
+;;    (load-theme 'ef-autumn :no-confirm))
+
+;; set the theme to be dracula
+(add-to-list 'custom-theme-load-path "~/.emacs.d/themes")
+(load-theme 'dracula t)
+
 ;; https://github.com/integral-dw/org-superstar-mode
 (use-package org-superstar
   :straight (org-superstar :type git
@@ -586,13 +593,13 @@
 ;;           l-use-filename-as-title t
 ;;           deft-recursive t))
      
-;; ;; --- beancount ---
-;; (add-to-list 'load-path "~/finances/beancount-mode/")
-;; (require 'beancount)
-;; (add-to-list 'auto-mode-alist '("\\.beancount\\'" . beancount-mode))
-;; (add-hook 'beancount-mode-hook #'outline-minor-mode)
-;; (define-key beancount-mode-map (kbd "C-c C-n") #'outline-next-visible-heading)
-;; (define-key beancount-mode-map (kbd "C-c C-p") #'outline-previous-visible-heading)
+;; --- beancount ---
+(add-to-list 'load-path "~/finances/beancount-mode/")
+(require 'beancount)
+(add-to-list 'auto-mode-alist '("\\.beancount\\'" . beancount-mode))
+(add-hook 'beancount-mode-hook #'outline-minor-mode)
+(define-key beancount-mode-map (kbd "C-c C-n") #'outline-next-visible-heading)
+(define-key beancount-mode-map (kbd "C-c C-p") #'outline-previous-visible-heading)
 
 ;; ;; --- EMMS ---
 ;; ;; EMMS basic configuration
@@ -602,7 +609,7 @@
 ;; (setq emms-source-file-default-directory "/mnt/music/") ;; Change to your music folder
 
 ;; https://github.com/remyhonig/elfeed-org
- (use-package elfeed-org
+(use-package elfeed-org
    :straight (elfeed-org   :type git
                            :host github
                            :repo "remyhonig/elfeed-org")
@@ -623,27 +630,51 @@
    (setq elfeed-show-entry-switch 'display-buffer
          elfeed-db-directory "~/.elfeed"
          elfeed-enclosure-default-dir (expand-file-name "~/Downloads")
-	 elfeed-search-title-max-width 150
-         elfeed-search-trailing-width 30)
+	 elfeed-search-title-max-width 100
+         elfeed-search-trailing-width 30
+         elfeed-search-remain-on-entry t)
          (elfeed-set-timeout 36000))
 
+;; https://github.com/karthink/elfeed-tube
+(use-package elfeed-tube
+  :straight t
+  :after elfeed
+  :demand t
+  :config
+  ;; (setq elfeed-tube-auto-save-p nil) ; default value
+  ;; (setq elfeed-tube-auto-fetch-p t)  ; default value
+  (elfeed-tube-setup)
+
+  :bind (:map elfeed-show-mode-map
+         ("F" . elfeed-tube-fetch)
+         ([remap save-buffer] . elfeed-tube-save)
+         :map elfeed-search-mode-map
+         ("F" . elfeed-tube-fetch)
+         ([remap save-buffer] . elfeed-tube-save)))
+
+(use-package elfeed-tube-mpv
+  :straight t
+  :bind (:map elfeed-show-mode-map
+              ("C-c C-f" . elfeed-tube-mpv-follow-mode)
+              ("C-c C-w" . elfeed-tube-mpv-where)))
+
  ; play YouTube videos with MPV
-(defun elfeed-play-with-mpv ()
-  "Play entry link with mpv."
-  (interactive)
-  (let ((entry (if (eq major-mode 'elfeed-show-mode) elfeed-show-entry (elfeed-search-selected :single)))
-        (quality-arg "")
-        )
-     (message "Opening %s with mpv..." (elfeed-entry-link entry))
-     (start-process "elfeed-mpv" nil "mpv" (elfeed-entry-link entry))))
+;; (defun elfeed-play-with-mpv ()
+;;   "Play entry link with mpv."
+;;   (interactive)
+;;   (let ((entry (if (eq major-mode 'elfeed-show-mode) elfeed-show-entry (elfeed-search-selected :single)))
+;;         (quality-arg "")
+;;         )
+;;      (message "Opening %s with mpv..." (elfeed-entry-link entry))
+;;      (start-process "elfeed-mpv" nil "mpv" (elfeed-entry-link entry))))
 
-(defvar elfeed-mpv-patterns
-  '("youtu\\.?be")
-  "List of regexp to match against elfeed entry link to know whether to use mpv to visit the link.")
+;; (defvar elfeed-mpv-patterns
+;;   '("youtu\\.?be")
+;;   "List of regexp to match against elfeed entry link to know whether to use mpv to visit the link.")
 
-; Open in mpv when o is pressed:
-(eval-after-load 'elfeed-search
- '(define-key elfeed-search-mode-map (kbd "o") 'elfeed-play-with-mpv))
+;; ; Open in mpv when o is pressed:
+;; (eval-after-load 'elfeed-search
+;;  '(define-key elfeed-search-mode-map (kbd "o") 'elfeed-play-with-mpv))
 
 ; chat-gpt stuff - chatgpt-shell
 (use-package shell-maker
@@ -675,6 +706,10 @@
 ;;       '(("Helsinki, Finland" 60.16952 24.93545)
 ;;         ("Berlin, Germany" 52.52437 13.41053)
 ;;         ("Dubai, UAE" 25.0657 55.17128)))
+
+;; Special case for pdf-tools that has recently (2022) changed maintainer
+(straight-use-package
+ '(pdf-tools :type git :host github :repo "vedang/pdf-tools"))
 
 ;; (use-package pdf-tools
 ;;   ;;:defer t
@@ -745,7 +780,7 @@
   (setq python-shell-interpreter "ipython"
         python-shell-interpreter-args "-i --simple-prompt"))
 
-					; eshell
+; eshell
 (use-package eshell
   :bind ("s-n" . eshell)
   :demand t
