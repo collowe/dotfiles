@@ -61,7 +61,9 @@ bindsym $mod+Shift+q kill
 # A more modern dmenu replacement is rofi:
 bindsym $mod+x exec "rofi -modi drun,run -show drun"
 bindsym $mod+d exec "dmenu_run -nf '#F8F8F2' -nb '#282A36' -sb '#6272A4' -sf '#F8F8F2' -fn 'monospace-10' -p 'dmenu%'"
-
+#win-t - show applications
+#bindsym $mod+t exec "rofi -show window -config ~/.config/rofi/rofidmenu.rasi"
+#bindsym $mod+c exec --no-startup-id rofi -modi "clipboard:greenclip print" -show clipboard -config ~/.config/rofi/rofidmenu.rasi
 
 # There also is i3-dmenu-desktop which only displays applications shipping a
 # .desktop file. It is a wrapper around dmenu, so you need that installed.
@@ -152,6 +154,10 @@ bindsym $mod+7 workspace number $ws7
 bindsym $mod+8 workspace number $ws8
 bindsym $mod+9 workspace number $ws9
 bindsym $mod+0 workspace number $ws10
+
+# switch/iterate between workspaces
+bindsym $mod+Tab workspace next
+bindsym $mod+Shift+Tab workspace prev
 
 # move focused container to workspace
 bindsym $mod+Shift+1 move container to workspace number $ws1
@@ -257,3 +263,6 @@ client.background       #F8F8F2
 #client.urgent               #2f343f #2f343f #d8dee8 #2f343f #2f343f
 #client.placeholder          #2f343f #2f343f #d8dee8 #2f343f #2f343f
 #client.background           #2f343f
+
+# Transparency with picom compositor
+exec_always picom -f

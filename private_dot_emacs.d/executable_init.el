@@ -91,27 +91,33 @@
 
   (setq org-agenda-window-setup 'current-window)
   (setq org-agenda-custom-commands
-      (quote
-       (
-	("d" "Dashboard"
-	 (
-	  (tags "+WORK+PRIORITY={A}"
-		(
-		 (org-agenda-skip-function '(org-agenda-skip-entry-if 'todo '("TODO" "DONE" "CANX")))
-		 (org-agenda-overriding-header "High-priority unfinished tasks (WIP):")))
-		 (agenda "" nil)
-		 (todo "HOLD"
-		       (
-			(org-agenda-overriding-header "Blocked Tasks")
-			(org-agenda-max-todos nil)
-			)
-		       )
-		 (todo "TODO"
-                       (
-			(org-agenda-overriding-header "Unprocessed Journal Tasks")
-			(org-agenda-files '("~/org/journal"))
-			)
-                       (org-agenda-text-search-extra-files nil)))))))
+	`(("n" "Agenda and all TODOs"
+	   ((agenda "")
+	    (alltodo "")))
+	  ("d" "demo"
+	   ((todo "HOLD")))
+
+	  ))[]
+	    
+	       ;; ("d" "Dashboard"
+	       ;; 	((tags "+WORK+PRIORITY={A}"
+	       ;; 	       (
+	       ;; 		(org-agenda-skip-function '(org-agenda-skip-entry-if 'todo '("TODO" "DONE" "CANX")))
+	       ;; 		(org-agenda-overriding-header "High-priority unfinished tasks (WIP):")))
+	       ;; 	 (agenda "" nil)
+	       ;; 	 (todo "HOLD"
+	       ;; 	       (
+	       ;; 		(org-agenda-overriding-header "Blocked Tasks")
+	       ;; 		(org-agenda-max-todos nil)
+	       ;; 		)
+	       ;; 	       )
+	       ;; 	 (todo "TODO"
+               ;;         (
+	       ;; 		(org-agenda-overriding-header "Unprocessed Journal Tasks")
+	       ;; 		(org-agenda-files '("~/org/journal"))
+	       ;; 		)
+               ;;         (org-agenda-text-search-extra-files nil)))))))
+  
   (setq org-capture-templates
 	`(("t" "todo" entry (file+headline ,(concat org-directory "/tasks/work.org") "Capture")
 	   "** TODO %?\n" :empty-lines 1)
