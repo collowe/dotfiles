@@ -77,10 +77,8 @@
   (setq org-log-done 'time)
   (setq org-log-into-drawer t)
   (setq org-return-follows-link t)
-  
   (setq org-agenda-include-diary t)
-  (setq org-agenda-files (list "~/org/tasks"
-			       "~/org/journal"))
+  (setq org-agenda-files (list "~/org/tasks"))
 
   ;(setq org-agenda-hide-tags-regexp ".")
   ;(setq org-agenda-prefix-format
@@ -91,33 +89,60 @@
 
   (setq org-agenda-window-setup 'current-window)
   (setq org-agenda-custom-commands
-	`(("n" "Agenda and all TODOs"
-	   ((agenda "")
-	    (alltodo "")))
-	  ("d" "demo"
-	   ((todo "HOLD")))
-
-	  ))[]
+	`(("d" "Daily Agenda and High Priority Tasks"
+	   ((tags-todo "+PRIORITY=\"A\""
+               ((org-agenda-skip-function '(org-agenda-skip-entry-if 'scheduled)) 
+                (org-agenda-block-separator nil)
+                (org-agenda-overriding-header "Important tasks without a date\n")))
+	    ; show overdue items separately
+	    (agenda "" ((org-agenda-overriding-header "\nOverdue Tasks")
+             (org-agenda-time-grid nil)
+             (org-agenda-start-on-weekday nil)
+             (org-agenda-show-all-dates nil)
+             (org-agenda-format-date "")  ;; Skip the date
+             (org-agenda-span 1)
+             (org-agenda-skip-function '(org-agenda-skip-entry-if 'todo 'done))
+             (org-agenda-entry-types '(:deadline :scheduled))
+             (org-scheduled-past-days 999)
+             (org-deadline-past-days 999)
+	     (org-agenda-include-diary nil)
+	     (org-agenda-block-separator nil)
+             (org-deadline-warning-days 0)))
 	    
-	       ;; ("d" "Dashboard"
-	       ;; 	((tags "+WORK+PRIORITY={A}"
-	       ;; 	       (
-	       ;; 		(org-agenda-skip-function '(org-agenda-skip-entry-if 'todo '("TODO" "DONE" "CANX")))
-	       ;; 		(org-agenda-overriding-header "High-priority unfinished tasks (WIP):")))
-	       ;; 	 (agenda "" nil)
-	       ;; 	 (todo "HOLD"
-	       ;; 	       (
-	       ;; 		(org-agenda-overriding-header "Blocked Tasks")
-	       ;; 		(org-agenda-max-todos nil)
-	       ;; 		)
-	       ;; 	       )
-	       ;; 	 (todo "TODO"
-               ;;         (
-	       ;; 		(org-agenda-overriding-header "Unprocessed Journal Tasks")
-	       ;; 		(org-agenda-files '("~/org/journal"))
-	       ;; 		)
-               ;;         (org-agenda-text-search-extra-files nil)))))))
-  
+	     ; following section from Prot's config - https://github.com/protesilaos/dotfiles/blob/master/emacs/.emacs.d/prot-lisp/prot-org.el
+	     ; and https://protesilaos.com/codelog/2021-12-09-emacs-org-block-agenda/
+	     (agenda "" ((org-agenda-span 1)      ; today only
+                (org-deadline-warning-days 0)     ; remove any deadline warnings
+                (org-agenda-block-separator nil)  ; remove separators between sections
+                (org-scheduled-past-days 0)       ; remove any scheduled in the past
+                (org-agenda-day-face-function (lambda (date) 'org-agenda-date))
+                (org-agenda-format-date "%A %-e %B %Y")
+                (org-agenda-overriding-header "\nToday's agenda\n")))
+	     (agenda "" ((org-agenda-start-on-weekday nil)
+                (org-agenda-start-day nil)
+                (org-agenda-start-day "+1d")
+                (org-agenda-span 3)
+                (org-deadline-warning-days 0)
+                (org-agenda-block-separator nil)
+                (org-agenda-skip-function '(org-agenda-skip-entry-if 'todo 'done))
+                (org-agenda-overriding-header "\nNext three days\n")))
+	     (agenda "" ((org-agenda-time-grid nil)
+                (org-agenda-start-on-weekday nil)
+                ;; We don't want to replicate the previous section's
+                ;; three days, so we start counting from the day after.
+                (org-agenda-start-day "+4d")
+                (org-agenda-span 14)
+                (org-agenda-show-all-dates nil)
+                (org-deadline-warning-days 0)
+                (org-agenda-block-separator nil)
+                (org-agenda-entry-types '(:deadline))
+                (org-agenda-skip-function '(org-agenda-skip-entry-if 'todo 'done))
+                (org-agenda-overriding-header "\nUpcoming deadlines (+14d)\n")))
+	    (todo "HOLD"
+		  ((org-agenda-overriding-header "Blocked Tasks")
+		   (org-agenda-max-todos nil)))
+	    ))))
+ 
   (setq org-capture-templates
 	`(("t" "todo" entry (file+headline ,(concat org-directory "/tasks/work.org") "Capture")
 	   "** TODO %?\n" :empty-lines 1)
@@ -658,11 +683,11 @@
          ("F" . elfeed-tube-fetch)
          ([remap save-buffer] . elfeed-tube-save)))
 
-(use-package elfeed-tube-mpv
-  :straight t
-  :bind (:map elfeed-show-mode-map
-              ("C-c C-f" . elfeed-tube-mpv-follow-mode)
-              ("C-c C-w" . elfeed-tube-mpv-where)))
+;; (use-package elfeed-tube-mpv
+;;   :straight t
+;;   :bind (:map elfeed-show-mode-map
+;;               ("C-c C-f" . elfeed-tube-mpv-follow-mode)
+;;               ("C-c C-w" . elfeed-tube-mpv-where)))
 
  ; play YouTube videos with MPV
 ;; (defun elfeed-play-with-mpv ()
@@ -697,16 +722,16 @@
         (auth-source-pick-first-password :host "api.openai.com")))
 
 ;; weather
-(use-package biome
-  :straight (:host github :repo "SqrtMinusOne/biome"))
+;; (use-package biome
+;;   :straight (:host github :repo "SqrtMinusOne/biome"))
 
-(setq biome-query-coords
-      '(("Horsforth, England" 53.84260000 -1.63754000)
-        ("Douglas, England" 55.5500000 -3.8500000)))
+;; (setq biome-query-coords
+;;       '(("Horsforth, England" 53.84260000 -1.63754000)
+;;         ("Douglas, England" 55.5500000 -3.8500000)))
 
 ;;  Ement.
-(use-package ement
-  :straight (:host github :repo "alphapapa/ement.el"))
+;; (use-package ement
+;;   :straight (:host github :repo "alphapapa/ement.el"))
 
 ;; (setq biome-query-coords
 ;;       '(("Helsinki, Finland" 60.16952 24.93545)
