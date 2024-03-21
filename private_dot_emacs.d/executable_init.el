@@ -96,6 +96,7 @@
                 (org-agenda-overriding-header "Important tasks without a date\n")))
 	    ; show overdue items separately
 	    (agenda "" ((org-agenda-overriding-header "\nOverdue Tasks")
+	     (org-agenda-start-day "-1d")
              (org-agenda-time-grid nil)
              (org-agenda-start-on-weekday nil)
              (org-agenda-show-all-dates nil)
@@ -146,23 +147,21 @@
   (setq org-capture-templates
 	`(("t" "todo" entry (file+headline ,(concat org-directory "/tasks/work.org") "Capture")
 	   "** TODO %?\n" :empty-lines 1)
-	;("r" "respond" entry (file ,(concat org-directory "/refile.org"))
-	;     "* TODO Respond to %^{person} on %^{subject}\n%U")
-	;("n" "note"  entry (file+headline, (concat org-directory "/refile.org") "Notes")
-        ;      "* %? :NOTE:\n%U")
-	("m" "meeting" entry (file+headline, (concat org-directory "/tasks/work.org") "Capture")
-	 "** Meeting: %^{SUBJECT}%? \n%^T\n*** Attendees\n*** Notes\n\n" :empty-lines 1)
-        ("p" "phone call"  entry (file+headline, (concat org-directory "/tasks/work.org") "Capture")
-	 "** Phone %^{person} \n%U\n*** Notes\n\n" :empty-lines 1)))
+	  ("l" "daily bookmarks" entry
+	   (file+olp+datetree, (concat org-directory "/bookmarks/bookmarks.org") "Capture")
+	   "** %(org-cliplink-capture)%?\n" :unnarrowed t)
+	  ("m" "meeting" entry
+	   (file+headline, (concat org-directory "/tasks/work.org") "Capture")
+	   "** Meeting: %^{SUBJECT}%? \n%^T\n*** Attendees\n*** Notes\n\n" :empty-lines 1)
+	  ("p" "phone call" entry
+	   (file+headline, (concat org-directory "/tasks/work.org") "Capture")
+	   "** Phone %^{person} \n%U\n*** Notes\n\n" :empty-lines 1)))
   
   (global-set-key (kbd "C-c a") 'org-agenda)
   (global-set-key (kbd "C-c c") 'org-capture)
   (global-set-key (kbd "C-c w") (lambda () (interactive) (find-file "~/org/tasks/work.org")))
   (global-set-key (kbd "C-c q") (lambda () (interactive) (find-file "~/org/tasks/home.org"))))
-
-;;  '(org-agenda-skip-deadline-prewarning-if-scheduled 'pre-scheduled)
-;;  '(org-agenda-span 'day)
-
+  
 ;; --- org ---
 (add-to-list 'load-path (expand-file-name "~/org")) ; default path
 (add-to-list 'auto-mode-alist '("\\.\\(org\\|org_archive\\|txt\\)$" . org-mode))
@@ -213,22 +212,23 @@
   :config
   (all-the-icons-completion-mode))
 
-(use-package doom-modeline
-  :straight t
-  ;; :if (not (display-graphic-p))
-  :init
-  (setq doom-modeline-env-enable-python nil)
-  (setq doom-modeline-env-enable-go nil)
-  (setq doom-modeline-buffer-encoding 'nondefault)
-  (setq doom-modeline-hud t)
-  (setq doom-modeline-persp-icon nil)
-  (setq doom-modeline-persp-name nil)
-  (setq doom-modeline-display-misc-in-all-mode-lines nil)
-  :config
-  (setq doom-modeline-minor-modes nil)
-  (setq doom-modeline-irc nil)
-  (setq doom-modeline-buffer-state-icon nil)
-  (doom-modeline-mode 1))
+;; doesn't play nice with eglot
+;; (use-package doom-modeline
+;;   :straight t
+;;   ;; :if (not (display-graphic-p))
+;;   :init
+;;   (setq doom-modeline-env-enable-python nil)
+;;   (setq doom-modeline-env-enable-go nil)
+;;   (setq doom-modeline-buffer-encoding 'nondefault)
+;;   (setq doom-modeline-hud t)
+;;   (setq doom-modeline-persp-icon nil)
+;;   (setq doom-modeline-persp-name nil)
+;;   (setq doom-modeline-display-misc-in-all-mode-lines nil)
+;;   :config
+;;   (setq doom-modeline-minor-modes nil)
+;;   (setq doom-modeline-irc nil)
+;;   (setq doom-modeline-buffer-state-icon nil)
+;;   (doom-modeline-mode 1))
 
 ; --- helpful ---
 (use-package helpful
@@ -255,6 +255,10 @@
 ;; By default, C-h F is bound to `Info-goto-emacs-command-node'. Helpful
 ;; already links to the manual, if a function is referenced there.
 (global-set-key (kbd "C-h F") #'helpful-function)
+
+;; org-babel
+(org-babel-do-load-languages
+ 'org-babel-load-languages '((shell . t)))
 
 ; https://github.com/minad/vertico
 (use-package vertico
@@ -376,19 +380,27 @@
 ;; set default font
 (set-frame-font "Iosevka Light 16" nil t)
 
+;; csv-mode
+(use-package csv-mode
+  :straight (csv-mode :type git
+		      :host github
+		      :repo "emacs-straight/csv-mode"
+		      :files ("*" (:exclude ".git"))))
+
 ;; https://github.com/protesilaos/ef-themes
-;; (use-package ef-themes
-;;   :straight (ef-themes :type git
-;; 		       :host gitlab
-;; 		       :repo "protesilaos/ef-themes")
-;;    :config
-;;    ;; disable any active themes
-;;    (mapc #'disable-theme custom-enabled-themes)
-;;    (load-theme 'ef-autumn :no-confirm))
+(use-package ef-themes
+  :straight (ef-themes :type git
+		       :host gitlab
+		       :repo "protesilaos/ef-themes")
+   :config
+   ;; disable any active themes
+   (mapc #'disable-theme custom-enabled-themes)
+   (load-theme 'ef-autumn :no-confirm))
 
 ;; set the theme to be dracula
-(add-to-list 'custom-theme-load-path "~/.emacs.d/themes")
-(load-theme 'dracula t)
+;(add-to-list 'custom-theme-load-path "~/.emacs.d/themes")
+;(mapc #'disable-theme custom-enabled-themes)
+;(load-theme 'dracula t)
 
 ;; https://github.com/integral-dw/org-superstar-mode
 (use-package org-superstar
@@ -455,9 +467,11 @@
 ;; https://github.com/tuh8888/chezmoi.el
 (use-package chezmoi
   :straight (chezmoi :type git
-                     :host nil
-                     :repo "https://github.com/tuh8888/chezmoi.el")
-)
+		     :flavor melpa
+		     :host github
+                     :repo "tuh8888/chezmoi.el"
+		     :files (:defaults "extensions/chezmoi-ediff.el")))
+(require 'chezmoi-ediff)
 
 ;; --- Diary ---
 (setq diary-file "~/org/diary/diary")     ;; set the calendar file
@@ -465,7 +479,7 @@
 (setq calendar-longitude -1.636099)       ;; calendar location - long
 (setq calendar-week-start-day 1)          ;; set calendar to start on Monday
 (setq calendar-mark-diary-entries-flag t) ;; mark diary entries in calendar by default
-
+;;
 ;; --- org-journal ---
 (use-package org-journal
   :straight (org-journal :type git
@@ -547,16 +561,17 @@
     (apply #'org-roam-node-insert args)))
 
 ;; --- org-roam-ui ---
-(use-package org-roam-ui
-  :straight (org-roam-ui :type git
-                         :host github
-                         :repo "org-roam/org-roam-ui")
-  :after org-roam
-  :config
-  (setq org-roam-ui-sync-theme t
-        org-roam-ui-follow t
-        org-roam-ui-update-on-save t
-	org-roam-ui-open-on-start nil))
+;; (use-package org-roam-ui
+;;   :straight (org-roam-ui :type git
+;;                          :host github
+;;                          :repo "org-roam/org-roam-ui")
+;;   :after org-roam
+;;   :config
+;;   (setq org-roam-ui-sync-theme t
+;;         org-roam-ui-follow t
+;; 	org-roam-ui
+;;         org-roam-ui-update-on-save t
+;; 	org-roam-ui-open-on-start nil))
 
 ; https://org-roam.discourse.group/t/using-consult-ripgrep-with-org-roam-for-searching-notes/1226/8
 (defun col/org-roam-rg-search ()
@@ -565,6 +580,20 @@
   (let ((consult-ripgrep-command "rg --null --ignore-case --type org --line-buffered --color=always --max-columns=500 --no-heading --line-number . -e ARG OPTS"))
     (consult-ripgrep org-roam-directory)))
 (global-set-key (kbd "C-c rr") 'bms/org-roam-rg-search)
+
+; chat-gpt - doesn't work
+(defun col/kill-line-minus-markup ()
+  "Kill the current line minus the markup characters at either end."
+  (interactive)
+  (let ((line-start (line-beginning-position))
+        (line-end (line-end-position))
+        (markup-regexp "^\\(\\*+\\|/\\|_\\|\\+\\|=\\)\\(.*?\\)\\1$"))
+    (save-excursion
+      (goto-char line-start)
+      (when (looking-at markup-regexp)
+        (goto-char (match-end 2))
+        (delete-region line-end (point)))
+      (kill-line))))
 
 ; https://github.com/jgru/consult-org-roam
 (use-package consult-org-roam
@@ -804,12 +833,12 @@
 ;;
 ;; Requires
 ;;  pip3 install jedi autopep8 flake8 ipython importmagic yapf
-(use-package elpy
-  :straight t
-  :config
-  (elpy-enable)
-  (setq python-shell-interpreter "ipython"
-        python-shell-interpreter-args "-i --simple-prompt"))
+;; (use-package elpy
+;;   :straight t
+;;   :config
+;;   (elpy-enable)
+;;   (setq python-shell-interpreter "ipython"
+;;         python-shell-interpreter-args "-i --simple-prompt"))
 
 ; eshell
 (use-package eshell
@@ -829,11 +858,26 @@
               (setq-local corfu-auto nil)
               (corfu-mode))))
 
+(use-package pyvenv
+  :ensure t)
 
-;; ;; --- flycheck --- (syntax highlighting, uses pylint installed using pip)
-;; (use-package flycheck
-;;   :ensure t
-;;   :init (global-flycheck-mode))
+;; eglot
+(use-package eglot
+  :ensure t
+  :hook (python-base-mode-hook . eglot-ensure)
+  :mode(("\\.py\\'" . python-mode))
+  ;; :config
+  ;; (add-to-list 'eglot-server-programs
+  ;; 	       `(python-mode
+  ;; 	       . ,(eglot-alternatives '(("pyright-langserver" "--stdio")
+  ;;                                         "jedi-language-server"
+  ;;                                        "pylsp")))))
+)
+  
+;; --- flycheck --- (syntax highlighting, uses pylint installed using pip)
+(use-package flycheck
+  :ensure t
+  :init (global-flycheck-mode))
 
 ;; ;; --- testing nov.el ---
 ;; (use-package nov
