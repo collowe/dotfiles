@@ -145,16 +145,16 @@
 	    ))))
  
   (setq org-capture-templates
-	`(("t" "todo" entry (file+headline ,(concat org-directory "/tasks/work.org") "Capture")
+	`(("t" "todo" entry (file+headline ,(concat org-directory "/tasks/inbox.org") "Capture")
 	   "** TODO %?\n" :empty-lines 1)
 	  ("l" "daily bookmarks" entry
 	   (file+olp+datetree, (concat org-directory "/bookmarks/bookmarks.org") "Capture")
 	   "** %(org-cliplink-capture)%?\n" :unnarrowed t)
 	  ("m" "meeting" entry
-	   (file+headline, (concat org-directory "/tasks/work.org") "Capture")
+	   (file+headline, (concat org-directory "/tasks/inbox.org") "Capture")
 	   "** Meeting: %^{SUBJECT}%? \n%^T\n*** Attendees\n*** Notes\n\n" :empty-lines 1)
 	  ("p" "phone call" entry
-	   (file+headline, (concat org-directory "/tasks/work.org") "Capture")
+	   (file+headline, (concat org-directory "/tasks/inbox.org") "Capture")
 	   "** Phone %^{person} \n%U\n*** Notes\n\n" :empty-lines 1)))
   
   (global-set-key (kbd "C-c a") 'org-agenda)
