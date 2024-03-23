@@ -61,7 +61,7 @@
 
 ;; bookmarks
 ; set the default bookmark file
-(setq bookmark-default-file "~/org/bookmarks/bookmarks")
+(setq bookmark-default-file "~/org/notes/bookmarks/bookmarks")
 ; autosave bookmark file on change
 (setq bookmark-save-flag 1)
 
@@ -148,7 +148,7 @@
 	`(("t" "todo" entry (file+headline ,(concat org-directory "/tasks/inbox.org") "Capture")
 	   "** TODO %?\n" :empty-lines 1)
 	  ("l" "daily bookmarks" entry
-	   (file+olp+datetree, (concat org-directory "/bookmarks/bookmarks.org") "Capture")
+	   (file+olp+datetree, (concat org-directory "/notes/bookmarks/bookmarks.org") "Capture")
 	   "** %(org-cliplink-capture)%?\n" :unnarrowed t)
 	  ("m" "meeting" entry
 	   (file+headline, (concat org-directory "/tasks/inbox.org") "Capture")
