@@ -654,7 +654,7 @@
 ;;           deft-recursive t))
      
 ;; --- beancount ---
-(add-to-list 'load-path "~/finances/beancount-mode/")
+(add-to-list 'load-path "~/.emacs.d/beancount-mode/")
 (require 'beancount)
 (add-to-list 'auto-mode-alist '("\\.beancount\\'" . beancount-mode))
 (add-hook 'beancount-mode-hook #'outline-minor-mode)
