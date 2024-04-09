@@ -712,6 +712,33 @@
          ("F" . elfeed-tube-fetch)
          ([remap save-buffer] . elfeed-tube-save)))
 
+;; elfeed browser open functions
+;; from https://noonker.github.io/posts/2020-04-22-elfeed/
+(defun elfeed-eww-open (&optional use-generic-p)
+  "open with eww"
+  (interactive "P")
+  (let ((entries (elfeed-search-selected)))
+    (cl-loop for entry in entries
+             do (elfeed-untag entry 'unread)
+             when (elfeed-entry-link entry)
+             do (eww-browse-url it))
+    (mapc #'elfeed-search-update-entry entries)
+    (unless (use-region-p) (forward-line))))
+
+(defun elfeed-firefox-open (&optional use-generic-p)
+  "open with firefox"
+  (interactive "P")
+  (let ((entries (elfeed-search-selected)))
+    (cl-loop for entry in entries
+             do (elfeed-untag entry 'unread)
+             when (elfeed-entry-link entry)
+             do (browse-url-firefox it))
+    (mapc #'elfeed-search-update-entry entries)
+    (unless (use-region-p) (forward-line))))
+
+(define-key elfeed-search-mode-map (kbd "w") 'elfeed-eww-open)
+(define-key elfeed-search-mode-map (kbd "f") 'elfeed-firefox-open)
+
 ;; (use-package elfeed-tube-mpv
 ;;   :straight t
 ;;   :bind (:map elfeed-show-mode-map
