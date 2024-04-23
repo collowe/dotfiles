@@ -428,6 +428,7 @@
 ;; set the default listing switches to be more compact, sorted by size
 ;;(setq dired-listing-switches "-lGghaS")
 (setq dired-auto-revert-buffer t) ; auto-update the dired buffer on revisit
+(setf dired-kill-when-opening-new-dired-buffer t) ; don't open a new buffer, use the existing one
 
 ;; --- Dired Additions ---
 (use-package diredfl
@@ -905,6 +906,11 @@
 (use-package flycheck
   :ensure t
   :init (global-flycheck-mode))
+
+;; (use-package mastodon
+;;   :straight t
+;;   :config (setq mastodon-instance-url "https://emacs.ch"
+;; 		  mastodon-active-user "clowe"))
 
 ;; ;; --- testing nov.el ---
 ;; (use-package nov
