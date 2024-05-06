@@ -331,21 +331,21 @@
 (use-package corfu
   :straight t
   :custom
-  (corfu-min-width 80)
-  (corfu-max-width corfu-min-width)
-  (corfu-count 14)
-  (corfu-scroll-margin 4)
+  ;; (corfu-min-width 80)
+  ;; (corfu-max-width corfu-min-width)
+  ;; (corfu-count 14)
+  ;; (corfu-scroll-margin 4)
   (corfu-cycle t)
   (corfu-auto t)
-  (corfu-auto-delay 0.3)
-  (corfu-separator ?\s)
-  (corfu-quit-at-boundary nil)
-  (corfu-quit-no-match t)
-  (corfu-preview-current nil)
-  (corfu-preselect-first t)
-  (corfu-on-exact-match t)
-  (corfu-echo-documentation nil)
-  (corfu-popupinfo-mode 1)
+  ;; (corfu-auto-delay 0.3)
+  ;; (corfu-separator ?\s)
+  ;; (corfu-quit-at-boundary nil)
+  ;; (corfu-quit-no-match t)
+  ;; (corfu-preview-current nil)
+  ;; (corfu-preselect-first t)
+  ;; (corfu-on-exact-match t)
+  ;; (corfu-echo-documentation nil)
+  ;; (corfu-popupinfo-mode 1)
   ;:config
   ;(set-face-attribute 'corfu-default nil
   ;                    :background (nord-color "polar-night-0")
@@ -893,15 +893,21 @@
 (use-package eglot
   :ensure t
   :hook (python-base-mode-hook . eglot-ensure)
-  :mode(("\\.py\\'" . python-mode))
+)
+  ;; :mode(("\\.py\\'" . python-mode))
   ;; :config
   ;; (add-to-list 'eglot-server-programs
   ;; 	       `(python-mode
   ;; 	       . ,(eglot-alternatives '(("pyright-langserver" "--stdio")
   ;;                                         "jedi-language-server"
   ;;                                        "pylsp")))))
-)
-  
+
+;; Enable LSP support by default in programming buffers
+(add-hook 'prog-mode-hook #'eglot-ensure)
+
+;; Create a memorable alias for `eglot-ensure'.
+(defalias 'start-lsp-server #'eglot)
+
 ;; --- flycheck --- (syntax highlighting, uses pylint installed using pip)
 (use-package flycheck
   :ensure t
