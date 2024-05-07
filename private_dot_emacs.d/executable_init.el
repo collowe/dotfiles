@@ -429,6 +429,7 @@
 ;;(setq dired-listing-switches "-lGghaS")
 (setq dired-auto-revert-buffer t) ; auto-update the dired buffer on revisit
 (setf dired-kill-when-opening-new-dired-buffer t) ; don't open a new buffer, use the existing one
+(setq dired-listing-switches "-agho --group-directories-first")
 
 ;; --- Dired Additions ---
 (use-package diredfl
