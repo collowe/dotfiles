@@ -914,10 +914,10 @@
   :ensure t
   :init (global-flycheck-mode))
 
-;; (use-package mastodon
-;;   :straight t
-;;   :config (setq mastodon-instance-url "https://emacs.ch"
-;; 		  mastodon-active-user "clowe"))
+(use-package mastodon
+  :straight t
+  :config (setq mastodon-instance-url "https://emacs.ch"
+		  mastodon-active-user "clowe"))
 
 ;; ;; --- testing nov.el ---
 ;; (use-package nov
