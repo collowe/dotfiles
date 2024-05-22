@@ -914,6 +914,10 @@
   :ensure t
   :init (global-flycheck-mode))
 
+;; --- YAML ---
+(use-package yaml-mode
+  :straight (:host github :repo "yoshiki/yaml-mode" :mode ("\\.yml$") :bind (:map yaml-mode-map ("C-m" . newline-and-indent))))
+
 (use-package mastodon
   :straight t
   :config (setq mastodon-instance-url "https://emacs.ch"
