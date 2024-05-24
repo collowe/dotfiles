@@ -918,18 +918,8 @@
 (use-package yaml-mode
   :straight (:host github :repo "yoshiki/yaml-mode" :mode ("\\.yml$") :bind (:map yaml-mode-map ("C-m" . newline-and-indent))))
 
+;; --- Mastodon ---
 (use-package mastodon
-  :straight t
-  :config (setq mastodon-instance-url "https://emacs.ch"
-		  mastodon-active-user "clowe"))
-
-;; ;; --- testing nov.el ---
-;; (use-package nov
-;;   :ensure t
-;;   :config
-;;   (setq nov-text-width 80)
-;;   )
-;; (add-to-list 'auto-mode-alist '("\\.epub\\'" . nov-mode))
-
-;; ;; load the work org file 
-;; (find-file "~/org/tasks/work.org")
+  :config
+  (setq mastodon-instance-url "https://emacs.ch"
+	mastodon-active-user "clowe"))
