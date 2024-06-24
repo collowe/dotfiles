@@ -73,7 +73,7 @@
   (setq org-startup-folded t) 
   (setq org-hide-emphasis-markers t)
   (setq org-todo-keywords '((type "TODO(t)" "NEXT(n)" "STRT(s)" "HOLD(h@/!)" "PROJ(p)" "|" "DONE(d!)" "CANX(c@)")))
-  (setq org-refile-targets '((org-agenda-files :maxlevel . 6 )))
+  (setq org-refile-targets '((org-agenda-files :maxlevel . 2 )))
   (setq org-log-done 'time)
   (setq org-log-into-drawer t)
   (setq org-return-follows-link t)
