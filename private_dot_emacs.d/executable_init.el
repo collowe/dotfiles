@@ -510,6 +510,16 @@
     (org-narrow-to-subtree))
   (goto-char (point-max)))
 
+;; https://github.com/protesilaos/denote
+(use-package denote
+  :straight (denote :type git
+                    :host github
+                    :repo "protesilaos/denote")
+  :init
+  (setq denote-directory (expand-file-name "~/org/notes")
+	denote-known-keywords '("emacs")
+	denote-sort-keywords t))
+
 (use-package emacsql-sqlite
   :defer
   :straight (:type built-in))
