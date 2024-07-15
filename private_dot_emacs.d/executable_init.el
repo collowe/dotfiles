@@ -196,8 +196,8 @@
 (setq isearch-lazy-count t)       ; enable hit count in isearch
 (setq lazy-count-prefix-format nil) ; better formatting in lazy search count
 (setq lazy-count-suffix-format "   (%s/%s)") ; better formatting in lazy search count
-(setq org-attach-id-dir "/home/col/data/org-attach")
-(setq org-attach-directory "/home/col/data/org-attach")
+(setq org-attach-id-dir "/home/col/org/attachments")
+(setq org-attach-directory "/home/col/org/attachments")
 (setq org-attach-auto-tag "ATTACH")
 
 (setq custom-file (locate-user-emacs-file "custom-vars.el")) ; use custom file location to keep init.el clean
