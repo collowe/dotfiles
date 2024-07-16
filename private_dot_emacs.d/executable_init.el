@@ -520,6 +520,37 @@
 	denote-known-keywords '("emacs")
 	denote-sort-keywords t))
 
+;; Denote key bindings.  
+(let ((map global-map))
+  (define-key map (kbd "C-c n n") #'denote)
+  (define-key map (kbd "C-c n c") #'denote-region) ; "contents" mnemonic
+  (define-key map (kbd "C-c n N") #'denote-type)
+  (define-key map (kbd "C-c n d") #'denote-date)
+  (define-key map (kbd "C-c n z") #'denote-signature) ; "zettelkasten" mnemonic
+  (define-key map (kbd "C-c n s") #'denote-subdirectory)
+  (define-key map (kbd "C-c n t") #'denote-template)
+  ;; If you intend to use Denote with a variety of file types, it is
+  ;; easier to bind the link-related commands to the `global-map', as
+  ;; shown here.  Otherwise follow the same pattern for `org-mode-map',
+  ;; `markdown-mode-map', and/or `text-mode-map'.
+  (define-key map (kbd "C-c n i") #'denote-link) ; "insert" mnemonic
+  (define-key map (kbd "C-c n I") #'denote-add-links)
+  (define-key map (kbd "C-c n b") #'denote-backlinks)
+  (define-key map (kbd "C-c n f f") #'denote-find-link)
+  (define-key map (kbd "C-c n f b") #'denote-find-backlink)
+  ;; Note that `denote-rename-file' can work from any context, not just
+  ;; Dired bufffers.  That is why we bind it here to the `global-map'.
+  (define-key map (kbd "C-c n r") #'denote-rename-file)
+  (define-key map (kbd "C-c n R") #'denote-rename-file-using-front-matter))
+
+;; Key bindings specifically for Dired.
+(let ((map dired-mode-map))
+  (define-key map (kbd "C-c C-d C-i") #'denote-link-dired-marked-notes)
+  (define-key map (kbd "C-c C-d C-r") #'denote-dired-rename-files)
+  (define-key map (kbd "C-c C-d C-k") #'denote-dired-rename-marked-files-with-keywords)
+  (define-key map (kbd "C-c C-d C-R") #'denote-dired-rename-marked-files-using-front-matter))
+
+
 (use-package emacsql-sqlite
   :defer
   :straight (:type built-in))
@@ -557,15 +588,17 @@
          :unnarrowed t)
 	("m" "recurring meeting" plain "%?" :if-new
           (file+head "~/org/notes/meeting/%<%Y%m>-${slug}.org" "#+title: ${title}\n#+created: %U\n#+filetags: :meeting:\n#+startup: overview\n")
-          :unnarrowed t)))      
-  :bind (("C-c n l" . org-roam-buffer-toggle)
-         ("C-c n f" . org-roam-node-find)
-         ("C-c n i" . org-roam-node-insert)
-	 ("C-c n I" . org-roam-node-insert-immediate)
-         (:map org-mode-map
-	    ("C-c n o" . org-id-get-create)
-	    ("C-c n t" . org-roam-tag-add)
-	    ("C-c n a" . org-roam-alias-add))))
+          :unnarrowed t)))
+  ;; commented temporarily as I get used to denote keybindings
+  ;; :bind (("C-c n l" . org-roam-buffer-toggle)
+  ;;        ("C-c n f" . org-roam-node-find)
+  ;;        ("C-c n i" . org-roam-node-insert)
+  ;; 	 ("C-c n I" . org-roam-node-insert-immediate)
+  ;;        (:map org-mode-map
+  ;; 	    ("C-c n o" . org-id-get-create)
+  ;; 	    ("C-c n t" . org-roam-tag-add)
+  ;; 	    ("C-c n a" . org-roam-alias-add)))
+  )
   
 ;; Insert a new org roam file and link without opening in a new bufferBound to C-c n I
 (defun org-roam-node-insert-immediate (arg &rest args)
@@ -633,12 +666,14 @@
    (consult-customize
     consult-org-roam-forward-links
     :preview-key (kbd "M-."))
-   :bind
-   ;; Define some convenient keybindings as an addition
-   ("C-c n e" . consult-org-roam-file-find)
-   ("C-c n b" . consult-org-roam-backlinks)
-   ("C-c n l" . consult-org-roam-forward-links)
-   ("C-c n r" . consult-org-roam-search))
+   ;; commented for now as I learn denote keybindings
+   ;; :bind
+   ;; ;; Define some convenient keybindings as an addition
+   ;; ("C-c n e" . consult-org-roam-file-find)
+   ;; ("C-c n b" . consult-org-roam-backlinks)
+   ;; ("C-c n l" . consult-org-roam-forward-links)
+   ;; ("C-c n r" . consult-org-roam-search)
+   )
 
 (defun col/org-replace-link-by-link-description ()
   "Replace an org link by its description or if empty its address"
