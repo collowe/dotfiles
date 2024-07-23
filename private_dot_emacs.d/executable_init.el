@@ -942,17 +942,16 @@
 (use-package eglot
   :ensure t
   :hook (python-base-mode-hook . eglot-ensure)
-)
-  ;; :mode(("\\.py\\'" . python-mode))
-  ;; :config
-  ;; (add-to-list 'eglot-server-programs
-  ;; 	       `(python-mode
+  :mode(("\\.py\\'" . python-mode))
+  :config
+  (add-to-list 'eglot-server-programs
+   	       '((python-mode) . ("pyright-langserver" "--stdio")))
   ;; 	       . ,(eglot-alternatives '(("pyright-langserver" "--stdio")
   ;;                                         "jedi-language-server"
   ;;                                        "pylsp")))))
 
 ;; Enable LSP support by default in programming buffers
-(add-hook 'prog-mode-hook #'eglot-ensure)
+;(add-hook 'prog-mode-hook #'eglot-ensure)
 
 ;; Create a memorable alias for `eglot-ensure'.
 (defalias 'start-lsp-server #'eglot)
