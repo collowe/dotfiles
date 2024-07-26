@@ -373,6 +373,13 @@
   :config
   (add-to-list 'corfu-margin-formatters #'kind-icon-margin-formatter))
 
+;; multiple cursors
+(use-package multiple-cursors
+  :straight (multiple-cursors
+	     :type git
+	     :host github
+	     :repo "magnars/multiple-cursors.el"))
+
 ;; set the theme using ef-themes
 ;; (use-package ef-themes
 ;;   :ensure t)
