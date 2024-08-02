@@ -956,7 +956,8 @@
   ;; 	       . ,(eglot-alternatives '(("pyright-langserver" "--stdio")
   ;;                                         "jedi-language-server"
   ;;                                        "pylsp")))))
-
+)
+  
 ;; Enable LSP support by default in programming buffers
 ;(add-hook 'prog-mode-hook #'eglot-ensure)
 
