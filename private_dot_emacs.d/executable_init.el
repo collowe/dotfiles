@@ -22,7 +22,7 @@
 
 ; ensure use-package is installed
 ; https://www.gnu.org/software/emacs/manual/html_node/use-package/index.html
-; I use Use-Package to provide package install customisation
+; I use use-package to provide package install customisation
 (unless (package-installed-p 'use-package)
   (package-install 'use-package))
 (require 'use-package)
