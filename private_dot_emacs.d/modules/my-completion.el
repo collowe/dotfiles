@@ -116,6 +116,7 @@
 
 ;; https://github.com/justbur/emacs-which-key
 (use-package which-key
+  :ensure t
   :init
   (which-key-mode 1)
 )
