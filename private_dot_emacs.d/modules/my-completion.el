@@ -14,7 +14,7 @@
   :ensure t
   :custom
   (orderless-matching-styles '(orderless-literal orderless-regexp orderless-flex))
-  (completion-styles '(orderless))
+  (completion-styles '(orderless basic))
   (completion-category-overrides '((file (styles partial-completion)))))
 
 ; adds detail to completions
@@ -64,55 +64,57 @@
   :config
   ;; Use `consult-completion-in-region' if Vertico is enabled.
   ;; Otherwise use the default `completion--in-region' function.
-  ;; (setq completion-in-region-function
-  ;;       (lambda (&rest args)
-  ;;         (apply (if vertico-mode
-  ;;                  #'consult-completion-in-region
-  ;;                  #'completion--in-region)
-  ;;                args)))
+  (setq completion-in-region-function
+        (lambda (&rest args)
+          (apply (if vertico-mode
+                   #'consult-completion-in-region)
+                   ;;#'completion--in-region)
+                 args)))
 )
 
 ; in region completions with Corfu
-;; (use-package corfu
-;;   :custom
-;;   ;; (corfu-min-width 80)
-;;   ;; (corfu-max-width corfu-min-width)
-;;   ;; (corfu-count 14)
-;;   ;; (corfu-scroll-margin 4)
-;;   (corfu-cycle t)
-;;   (corfu-auto t)
-;;   ;; (corfu-auto-delay 0.3)
-;;   ;; (corfu-separator ?\s)
-;;   ;; (corfu-quit-at-boundary nil)
-;;   ;; (corfu-quit-no-match t)
-;;   ;; (corfu-preview-current nil)
-;;   ;; (corfu-preselect-first t)
-;;   ;; (corfu-on-exact-match t)
-;;   ;; (corfu-echo-documentation nil)
-;;   ;; (corfu-popupinfo-mode 1)
-;;   ;:config
-;;   ;(set-face-attribute 'corfu-default nil
-;;   ;                    :background (nord-color "polar-night-0")
-;;   ;                    :foreground (nord-color "aurora-3"))
-;;   ;(set-face-attribute 'corfu-current nil
-;;   ;                    :background (nord-color "frost-3")
-;;   ;                    :foreground (nord-color "snow-storm-1"))
-;;   ;(set-face-attribute 'corfu-annotations nil
-;;   ;                    :foreground (nord-color "snow-storm-0"))
-;;   :init
-;;   (global-corfu-mode))
+(use-package corfu
+  :ensure t
+  :custom
+  ;; (corfu-min-width 80)
+  ;; (corfu-max-width corfu-min-width)
+  (corfu-count 5)
+  ;; (corfu-scroll-margin 4)
+  (corfu-cycle t)              ;; Enable cycling for `corfu-next/previous'
+  (corfu-auto t)               ;; Enable auto completion
+  (corfu-auto-prefix 2)
+  (corfu-auto-delay 0.0)
+  ;; (corfu-separator ?\s)
+  ;; (corfu-quit-at-boundary nil)
+  ;; (corfu-quit-no-match t)
+  ;; (corfu-preview-current nil)
+  ;; (corfu-preselect-first t)
+  ;; (corfu-on-exact-match t)
+  ;; (corfu-echo-documentation nil)
+  ;; (corfu-popupinfo-mode 1)
+  :init
+  (global-corfu-mode)          ;; enable corfu globally
+  (corfu-history-mode)         ;; enable corfu history mode
+  :config
+  (add-hook 'eshell-mode-hook
+			(lambda() (setq-local corfu-quit-at-boundary t
+								  corfu-quit-no-match t
+								  corfu-auto nil)
+			  (corfu-mode))
+  nil
+  t))
 
-;; (use-package kind-icon
-;;   :if (display-graphic-p)
-;;   :straight t
-;;   :after corfu
-;;   :custom
-;;   (kind-icon-use-icons t)
-;;   (kind-icon-default-face 'corfu-default)
-;;   (kind-icon-blend-background nil)
-;;   (kind-icon-blend-frac 0.08)
-;;   :config
-;;   (add-to-list 'corfu-margin-formatters #'kind-icon-margin-formatter))
+(use-package kind-icon
+  :ensure t
+  :if (display-graphic-p)
+  :after corfu
+  :custom
+  (kind-icon-use-icons t)
+  (kind-icon-default-face 'corfu-default)
+  (kind-icon-blend-background nil)
+  (kind-icon-blend-frac 0.08)
+  :config
+  (add-to-list 'corfu-margin-formatters #'kind-icon-margin-formatter))
 
 ;; https://github.com/justbur/emacs-which-key
 (use-package which-key
