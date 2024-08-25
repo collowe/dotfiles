@@ -5,6 +5,7 @@
 ;;; Code:
 ;; https://github.com/protesilaos/denote
 (use-package denote
+  :ensure t
   :init
   (setq denote-directory (expand-file-name "~/org/notes")
 	denote-known-keywords '("emacs")
