@@ -118,12 +118,12 @@
   :ensure t
   :bind ( :map global-map ( "C-x p i" . org-cliplink)))
 
-;; ;; --- Diary ---
-;; (setq diary-file "~/org/diary/diary")     ;; set the calendar file
-;; (setq calendar-latitude 53.842178)        ;; calendar location - lat
-;; (setq calendar-longitude -1.636099)       ;; calendar location - long
-;; (setq calendar-week-start-day 1)          ;; set calendar to start on Monday
-;; (setq calendar-mark-diary-entries-flag t) ;; mark diary entries in calendar by default
+;; --- Diary ---
+(setq diary-file "~/org/diary/diary")     ;; set the calendar file
+(setq calendar-latitude 53.842178)        ;; calendar location - lat
+(setq calendar-longitude -1.636099)       ;; calendar location - long
+(setq calendar-week-start-day 1)          ;; set calendar to start on Monday
+(setq calendar-mark-diary-entries-flag t) ;; mark diary entries in calendar by default
 ;; ;;
 ;; ;; --- org-journal ---
 ;; (use-package org-journal
