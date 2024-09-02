@@ -5,6 +5,7 @@
 ;;; Code:
 ;; --- beancount ---
 (use-package beancount
+  :ensure t
   :load-path "~/.emacs.d/beancount-mode/"
   :bind(
 		:map beancount-mode-map
