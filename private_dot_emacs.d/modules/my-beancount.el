@@ -11,8 +11,10 @@
 		:map beancount-mode-map
 			 ("C-c C-n" . outline-next-visible-heading)
 			 ("C-c C-p" . outline-previous-visible-heading))
-  :hook (beancount-mode-hook . outline-minor-mode)
   :mode ("\\.beancount\\'" . beancount-mode))
+
+;; enable code folding in beancount files
+(add-hook 'beancount-mode-hook #'outline-minor-mode)
 
 ;; csv-mode
 (use-package csv-mode
