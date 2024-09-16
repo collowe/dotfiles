@@ -103,6 +103,31 @@
 (setq custom-file (locate-user-emacs-file "custom-vars.el"))
 (load custom-file 'noerror 'nomessage)
 
+;; Ensure TRAMP is required
+(require 'tramp)
+
+;; Set TRAMP's default method to ssh
+(setq tramp-default-method "ssh")
+
+;; Configure dired to not prompt for confirmation and keep versions on remote systems
+(setq dired-kept-versions 1)
+(setq dired-recursive-deletes 'always)
+
+;; Ensure dired uses the remote method for deletion
+(setq delete-by-moving-to-trash nil)
+
+(defun my-dired-do-delete-tramp (&optional arg)
+  "Delete files using dired and tramp directly on remote."
+  (interactive "P")
+  (if (tramp-tramp-file-p (dired-get-filename))
+      (let ((dired-recursive-deletes 'always)
+            (delete-by-moving-to-trash nil))
+        (dired-do-delete))
+    (dired-do-delete arg)))
+
+;; Bind the custom delete function to d
+(define-key dired-mode-map (kbd "d") 'my-dired-do-delete-tramp)
+
 ; --- helpful ---
 ;; (use-package helpful
 ;;   :commands (helpful-callable
