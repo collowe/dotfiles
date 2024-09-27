@@ -168,10 +168,10 @@
 ;; 	 diary-date-forms diary-iso-date-forms))
 
 ;; bookmarks
-; set the default bookmark file
-;(setq bookmark-default-file "~/org/notes/bookmarks/bookmarks")
-; autosave bookmark file on change
-;(setq bookmark-save-flag 1)
+;;set the default bookmark file
+(setq bookmark-default-file "~/org/notes/bookmarks/bookmarks")
+;;autosave bookmark file on change
+(setq bookmark-save-flag 1)
 
 
 (provide 'my-org)

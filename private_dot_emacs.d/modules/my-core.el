@@ -4,6 +4,23 @@
 
 ;;; Code:
 
+; machine-specific detection
+
+(defun aws-instance-p-via-files ()
+  "Check if the current machine is an AWS instance by looking for specific files."
+  (let ((cloud-init-file "/var/lib/cloud/instance"))
+    (file-exists-p cloud-init-file)))
+
+(defvar my/aws-instance-p nil
+  "Non-nil if the current machine is an AWS instance.")
+
+(setq my/aws-instance-p (aws-instance-p-via-files))
+
+;; (when my/aws-instance-p
+;;   (message "This is an AWS instance, apply additional settings if needed.")
+;;   ;; Additional AWS-specific configurations can go here
+;; )
+
 ; no startup screen
 (setq inhibit-startup-screen t)
 
@@ -88,7 +105,7 @@
 
 ; copy paste over existing text
 (delete-selection-mode t)
-
+ 
 ; minor mode to remember recent files
 (recentf-mode 1)
 

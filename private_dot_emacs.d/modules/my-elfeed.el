@@ -5,6 +5,7 @@
 ;;; Code:
 ;; https://github.com/skeeto/elfeed
 (use-package elfeed
+  :unless my/aws-instance-p
   :bind (
 		 :map global-map
 			  ( "C-x w" . elfeed)
@@ -22,6 +23,7 @@
 
 ;; https://github.com/remyhonig/elfeed-org
 (use-package elfeed-org
+  :unless my/aws-instance-p
   :ensure t
   :after elfeed
   :init

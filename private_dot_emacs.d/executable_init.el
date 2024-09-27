@@ -29,22 +29,24 @@
 
 ;; modules dir
 (add-to-list 'load-path (expand-file-name "modules" user-emacs-directory))
-
+(message "loading modules")
 ;; Load my modules
 (require 'my-core)
 (require 'my-org)
 (require 'my-completion)
 (require 'my-appearance)
 (require 'my-dired)
-(require 'my-elfeed)
 (require 'my-denote)
 (require 'my-python)
-(require 'my-beancount)
+(unless my/aws-instance-p
+  (message "home instance, loading home config")
+  (require 'my-elfeed)
+  (require 'my-beancount)
+  (require 'my-social))
 (require 'my-chatgpt)
 (require 'my-shell)
 (require 'my-source)
-(require 'my-social)
 (require 'my-pdf)
 
 (provide 'init)
-;;; init.el ends here
+;;; init.el ends here 
