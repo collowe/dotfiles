@@ -143,7 +143,7 @@
     (dired-do-delete arg)))
 
 ;; Bind the custom delete function to d
-(define-key dired-mode-map (kbd "d") 'my-dired-do-delete-tramp)
+;(define-key dired-mode-map (kbd "d") 'my-dired-do-delete-tramp)
 
 ; --- helpful ---
 ;; (use-package helpful

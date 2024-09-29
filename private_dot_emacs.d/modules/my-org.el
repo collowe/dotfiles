@@ -17,7 +17,8 @@
   (setq org-agenda-include-diary t)
   (setq org-agenda-files (list "~/org/tasks"))
   (setq org-agenda-window-setup 'current-window)
-
+  (setq org-indent-mode t)
+  
   (setq org-agenda-custom-commands
 	`(("d" "Daily Agenda and High Priority Tasks"
 	   ((tags-todo "+PRIORITY=\"A\""
