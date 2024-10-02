@@ -109,8 +109,8 @@
 (org-babel-do-load-languages
  'org-babel-load-languages '((shell . t)))
 
-(setq org-attach-id-dir "/home/col/org/attachments"
-	  org-attach-directory "/home/col/org/attachments"
+(setq org-attach-id-dir "/home/col/data/org-attach"
+	  org-attach-directory "/home/col/data/org-attach"
 	  org-attach-auto-tag "ATTACH")
 
 ; paste org link with description
