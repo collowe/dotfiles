@@ -164,9 +164,9 @@
 ;;           (insert description)))))
 
 ;; European calendar please
-;; (eval-after-load "calendar"
-;;   '(setq calendar-date-style 'european
-;; 	 diary-date-forms diary-iso-date-forms))
+(eval-after-load "calendar"
+  '(setq calendar-date-style 'european
+	 diary-date-forms diary-iso-date-forms))
 
 ;; bookmarks
 ;;set the default bookmark file
