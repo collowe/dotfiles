@@ -8,7 +8,6 @@
   :bind
   :config
   (setq org-startup-folded t)
-  (setq org-hide-emphasis-markers t)
   (setq org-todo-keywords '((type "TODO(t)" "NEXT(n)" "STRT(s)" "HOLD(h@/!)" "PROJ(p)" "|" "DONE(d!)" "CANX(c@)")))
   (setq org-refile-targets '((org-agenda-files :maxlevel . 2 )))
   (setq org-log-done 'time)
@@ -17,7 +16,9 @@
   (setq org-agenda-include-diary t)
   (setq org-agenda-files (list "~/org/tasks"))
   (setq org-agenda-window-setup 'current-window)
-  (setq org-indent-mode t)
+  (setq org-startup-indented t)      ; globally start indented mode for all org files
+  (setq org-adapt-indentation t)     ; indent content under headers
+  (setq org-hide-emphasis-markers t) ; hide text format markers
   
   (setq org-agenda-custom-commands
 	`(("d" "Daily Agenda and High Priority Tasks"
@@ -101,9 +102,6 @@
 
 ;; set default apps
 ;;(setq org-file-apps '(("\\.ods\\'" \.system) (auto-mode . emacs)))
-
-; indent content under headers
-(setq org-adapt-indentation t)  
 
 ;; include org-babel shell tangling
 (org-babel-do-load-languages
