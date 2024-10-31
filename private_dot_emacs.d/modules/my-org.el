@@ -16,7 +16,7 @@
   (setq org-agenda-include-diary t)
   (setq org-agenda-files (list "~/org/tasks"))
   (setq org-agenda-window-setup 'current-window)
-  (setq org-startup-indented t)      ; globally start indented mode for all org files
+  (setq org-hide-leading-stars t)
   (setq org-adapt-indentation t)     ; indent content under headers
   (setq org-hide-emphasis-markers t) ; hide text format markers
   
