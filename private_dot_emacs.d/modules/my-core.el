@@ -177,5 +177,8 @@
 ;; 	     :host github
 ;; 	     :repo "magnars/multiple-cursors.el"))
 
+;; mpv
+(setq mpv-default-options '("--screenshot-directory=~/temp/mpv" "--screenshot-template=%F-[%P]v%#01n"))
+
 (provide 'my-core)
 ;;; my-core.el ends here
