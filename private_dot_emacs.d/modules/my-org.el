@@ -172,6 +172,5 @@
 ;;autosave bookmark file on change
 (setq bookmark-save-flag 1)
 
-
 (provide 'my-org)
 ;;; my-org.el ends here

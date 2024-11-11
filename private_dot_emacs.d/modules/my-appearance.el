@@ -4,24 +4,43 @@
 
 ;;; Code:
 ;; set the theme using ef-themes
-(use-package ef-themes
-  :ensure t
-  :config
-  (ef-themes-select 'ef-elea-dark))
+;(use-package ef-themes
+;  :ensure t
+;  :config
+;  (ef-themes-select 'ef-elea-dark))
 
 ;; disable any active themes
-;(mapc #'disable-theme custom-enabled-themes)
-;(load-theme 'ef-autumn :no-confirm)
+(mapc #'disable-theme custom-enabled-themes)
 
+;; modus themes setup
+(require 'modus-themes)
+(defun my-org-todo-set-keyword-faces ()
+  (setq org-todo-keyword-faces
+        `(("TODO" . (:foreground ,(modus-themes-get-color-value 'blue-warmer) :weight bold))
+          ("DONE" . (:foreground ,(modus-themes-get-color-value 'green-warmer) :weight bold))
+          ("HOLD" . (:foreground ,(modus-themes-get-color-value 'red-warmer) :weight bold))
+          ("CANX" . (:foreground ,(modus-themes-get-color-value 'fg-dim) :weight bold))
+		  ("PROJ" . (:foreground ,(modus-themes-get-color-value 'magenta-warmer) :weight bold))
+		  )
+		)
+  (when (derived-mode-p 'org-mode)
+    (font-lock-fontify-buffer)))
+(with-eval-after-load 'modus-themes
+  (add-hook 'modus-themes-after-load-theme-hook #'my-org-todo-set-keyword-faces))
+
+(setq modus-themes-to-toggle '(modus-vivendi-tinted modus-operandi-tinted))
+(load-theme 'modus-vivendi-tinted :no-confirm)
+(define-key global-map (kbd "<f5>") #'modus-themes-toggle)
+  
 ;; set default font
 (set-frame-font "Iosevka Light 16" nil t)
 
 ;; https://github.com/integral-dw/org-superstar-mode
-(use-package org-superstar
-  :ensure t
-  :after org
-  :hook (org-mode . org-superstar-mode)
-)
+;(use-package org-superstar
+;  :ensure t
+;  :after org
+;  :hook (org-mode . org-superstar-mode)
+;)
 
 ; load all the icons if using a graphical display
 ; https://github.com/domtronn/all-the-icons.el
