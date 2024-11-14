@@ -142,14 +142,16 @@
         (dired-do-delete))
     (dired-do-delete arg)))
 
-(use-package windmove
-  ;; don't ensure means that we don't need to download it. It is built in
-  :ensure nil
-  :bind*
-  (("M-<left>" . windmove-left)
-   ("M-<right>" . windmove-right)
-   ("M-<up>" . windmove-up)
-   ("M-<down>" . windmove-down)))
+;; use windmove with meta key as the modifier (meta-left, meta-right etc)
+(windmove-default-keybindings 'meta)
+;; (use-package windmove
+;;   ;; don't ensure means that we don't need to download it. It is built in
+;;   :ensure nil
+;;   :bind*
+;;   (("M-<left>" . windmove-left)
+;;    ("M-<right>" . windmove-right)
+;;    ("M-<up>" . windmove-up)
+;;    ("M-<down>" . windmove-down)))
 
 ;; Bind the custom delete function to d
 ;(define-key dired-mode-map (kbd "d") 'my-dired-do-delete-tramp)
