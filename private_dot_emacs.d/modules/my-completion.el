@@ -92,6 +92,7 @@
   ;; (corfu-on-exact-match t)
   ;; (corfu-echo-documentation nil)
   ;; (corfu-popupinfo-mode 1)
+  (setq global-corfu-modes '(:not chatgpt-shell-mode))
   :init
   (global-corfu-mode)          ;; enable corfu globally
   (corfu-history-mode)         ;; enable corfu history mode
