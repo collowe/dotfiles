@@ -123,6 +123,11 @@
 (setq calendar-longitude -1.636099)       ;; calendar location - long
 (setq calendar-week-start-day 1)          ;; set calendar to start on Monday
 (setq calendar-mark-diary-entries-flag t) ;; mark diary entries in calendar by default
+
+;; -- Source Code Blocks
+(setq org-src-preserve-indentation nil)   ;; allow indentation
+(setq org-edit-src-content-indentation 0) ;; relative indent to #+begin_src
+
 ;; ;;
 ;; ;; --- org-journal ---
 ;; (use-package org-journal
