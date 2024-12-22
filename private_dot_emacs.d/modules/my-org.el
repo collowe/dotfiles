@@ -13,7 +13,7 @@
   (setq org-log-done 'time)
   (setq org-log-into-drawer t)
   (setq org-return-follows-link t)
-  (setq org-agenda-include-diary t)
+  (setq org-agenda-include-diary nil)
   (setq org-agenda-files (list "~/org/tasks"))
   (setq org-agenda-window-setup 'current-window)
   (setq org-hide-leading-stars t)
@@ -117,17 +117,22 @@
   :ensure t
   :bind ( :map global-map ( "C-x p i" . org-cliplink)))
 
-;; --- Diary ---
-(setq diary-file "~/org/diary/diary")     ;; set the calendar file
-(setq calendar-latitude 53.842178)        ;; calendar location - lat
-(setq calendar-longitude -1.636099)       ;; calendar location - long
-(setq calendar-week-start-day 1)          ;; set calendar to start on Monday
-(setq calendar-mark-diary-entries-flag t) ;; mark diary entries in calendar by default
+;; --- Calendar ---
+(use-package calendar
+  : ensure nil ;; built in
+  : commands (calendar)
+  :config
+  (setq diary-file "~/org/diary/diary")     ;; set the calendar file
+  (setq calendar-week-start-day 1)          ;; set calendar to start on Monday
+  (setq calendar-mark-diary-entries-flag t) ;; mark diary entries in calendar by default
+  (setq calendar-mark-holidays-flag t)      ;; mark holidays in calendar by default
+  (setq calendar-date-style 'iso)
+  (setq calendar-time-zone-style 'numeric)  ;; Emacs 28.1
+  (setq calendar-holidays nil)
 
-;; -- Source Code Blocks
-(setq org-src-preserve-indentation nil)   ;; allow indentation
-(setq org-edit-src-content-indentation 0) ;; relative indent to #+begin_src
-
+  (require 'solar)
+  (setq calendar-latitude 53.842178         ;; calendar location - lat
+        calendar-longitude -1.636099)       ;; calendar location - long
 ;; ;;
 ;; ;; --- org-journal ---
 ;; (use-package org-journal
