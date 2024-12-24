@@ -94,16 +94,17 @@
   ;; (corfu-popupinfo-mode 1)
   (setq global-corfu-modes '(:not chatgpt-shell-mode))
   :init
-  (global-corfu-mode)          ;; enable corfu globally
+  ;; (global-corfu-mode)          ;; enable corfu globally
   (corfu-history-mode)         ;; enable corfu history mode
   :config
-  (add-hook 'eshell-mode-hook
-			(lambda() (setq-local corfu-quit-at-boundary t
-								  corfu-quit-no-match t
-								  corfu-auto nil)
-			  (corfu-mode))
-  nil
-  t))
+  ;; (add-hook 'eshell-mode-hook
+  ;;			(lambda() (setq-local corfu-quit-at-boundary t
+  ;;								  corfu-quit-no-match t
+  ;;								  corfu-auto nil)
+  ;;			  (corfu-mode))
+  ;;nil
+  ;;t)
+)
 
 (use-package kind-icon
   :ensure t

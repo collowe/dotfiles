@@ -36,7 +36,19 @@ With a prefix argument, exit eshell before restoring previous config."
   ;;             (setq-local corfu-auto nil)
   ;;             (corfu-mode))))
 )
- 
+
+;; vterm shell package
+(use-package vterm
+    :commands vterm
+    :custom
+    (vterm-always-compile-module t)
+    :hook
+	(vterm-mode-hook . (lambda ()
+						 (set (make-local-variable 'buffer-face-mode-face) 'fixed-pitch)
+						 (buffer-face-mode t)))
+    :bind
+    ("<f7>" . vterm))
+
 ;; history autosuggestions
 ;;(use-package capf-autosuggest
 ;;  :ensure t
