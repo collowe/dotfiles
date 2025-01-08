@@ -7,7 +7,7 @@
 (use-package mastodon
   :ensure t
   :config
-  (setq mastodon-instance-url "https://emacs.ch"
+  (setq mastodon-instance-url "https://hachyderm.io"
 		mastodon-active-user "clowe"))
 
 ;; ;;  Ement - matrix client.
