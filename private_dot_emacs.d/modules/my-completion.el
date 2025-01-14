@@ -73,38 +73,42 @@
 )
 
 ; in region completions with Corfu
-(use-package corfu
-  :ensure t
-  :custom
-  ;; (corfu-min-width 80)
-  ;; (corfu-max-width corfu-min-width)
-  (corfu-count 5)
-  ;; (corfu-scroll-margin 4)
-  (corfu-cycle t)              ;; Enable cycling for `corfu-next/previous'
-  (corfu-auto t)               ;; Enable auto completion
-  (corfu-auto-prefix 2)
-  (corfu-auto-delay 0.0)
-  ;; (corfu-separator ?\s)
-  ;; (corfu-quit-at-boundary nil)
-  ;; (corfu-quit-no-match t)
-  ;; (corfu-preview-current nil)
-  ;; (corfu-preselect-first t)
-  ;; (corfu-on-exact-match t)
-  ;; (corfu-echo-documentation nil)
-  ;; (corfu-popupinfo-mode 1)
-  (setq global-corfu-modes '(:not chatgpt-shell-mode))
-  :init
-  ;; (global-corfu-mode)          ;; enable corfu globally
-  (corfu-history-mode)         ;; enable corfu history mode
-  :config
-  ;; (add-hook 'eshell-mode-hook
-  ;;			(lambda() (setq-local corfu-quit-at-boundary t
-  ;;								  corfu-quit-no-match t
-  ;;								  corfu-auto nil)
-  ;;			  (corfu-mode))
-  ;;nil
-  ;;t)
-)
+;; (use-package corfu
+;;   :ensure t
+;;   :after orderless
+;;   :custom
+;;   ;; (corfu-min-width 80)
+;;   ;; (corfu-max-width corfu-min-width)
+;;   (corfu-count 5)
+;;   ;; (corfu-scroll-margin 4)
+;;   (corfu-cycle t)              ;; Enable cycling for `corfu-next/previous'
+;;   (corfu-auto t)               ;; Enable auto completion
+;;   (corfu-auto-prefix 2)
+;;   (corfu-auto-delay 0.0)
+;;   (corfu-separator ?\s)
+;;   ;; (corfu-quit-at-boundary nil)
+;;   ;; (corfu-quit-no-match t)
+;;   ;; (corfu-preview-current nil)
+;;   ;; (corfu-preselect-first t)
+;;   ;; (corfu-on-exact-match t)
+;;   ;; (corfu-echo-documentation nil)
+;;   ;; (corfu-popupinfo-mode 1)
+;;   ;;:hook ((prog-mode . corfu-mode)
+;; ;;		 (shell-mode . corfu-mode)
+;;  ;;        (eshell-mode . corfu-mode))
+;;   (setq global-corfu-modes '(:not chatgpt-shell-mode))
+;;   :init
+;;   (global-corfu-mode)          ;; enable corfu globally
+;;   (corfu-history-mode)         ;; enable corfu history mode
+;;   :config
+;;   ;; (add-hook 'eshell-mode-hook
+;;   ;;			(lambda() (setq-local corfu-quit-at-boundary t
+;;   ;;								  corfu-quit-no-match t
+;;   ;;								  corfu-auto nil)
+;;   ;;			  (corfu-mode))
+;;   ;;nil
+;;   ;;t)
+;; )
 
 (use-package kind-icon
   :ensure t
