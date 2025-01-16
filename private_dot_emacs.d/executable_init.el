@@ -7,8 +7,9 @@
 ;; DEBUG
 ;(setq debug-on-error t)
 ;(setq debug-on-quit t)
-
-(require 'package)
+;; (advice-add 'require :before (lambda (feature &optional filename noerror)
+;; 			    (if (equal feature 'project)
+;; 				(debug))))
 
 ; set package archive locations
 (setq package-archives

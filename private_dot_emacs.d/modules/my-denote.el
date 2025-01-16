@@ -6,6 +6,7 @@
 ;; https://github.com/protesilaos/denote
 (use-package denote
   :ensure t
+  :after (my-python)
   :init
   (setq denote-directory (expand-file-name "~/org/notes")
 	denote-known-keywords '("emacs")

@@ -104,8 +104,8 @@
 ;;(setq org-file-apps '(("\\.ods\\'" \.system) (auto-mode . emacs)))
 
 ;; include org-babel shell tangling
-(org-babel-do-load-languages
- 'org-babel-load-languages '((shell . t)))
+;(org-babel-do-load-languages
+; 'org-babel-load-languages '((shell . t)))
 
 (setq org-attach-id-dir "/home/col/data/org-attach"
 	  org-attach-directory "/home/col/data/org-attach"
