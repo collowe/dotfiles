@@ -13,7 +13,6 @@
   (setq org-log-done 'time)
   (setq org-log-into-drawer t)
   (setq org-return-follows-link t)
-  (setq org-agenda-include-diary t)
   (setq org-agenda-files (list "~/org/tasks"))
   (setq org-agenda-window-setup 'current-window)
   (setq org-hide-leading-stars t)
@@ -117,12 +116,6 @@
   :ensure t
   :bind ( :map global-map ( "C-x p i" . org-cliplink)))
 
-;; --- Diary ---
-(setq diary-file "~/org/diary/diary")     ;; set the calendar file
-(setq calendar-latitude 53.842178)        ;; calendar location - lat
-(setq calendar-longitude -1.636099)       ;; calendar location - long
-(setq calendar-week-start-day 1)          ;; set calendar to start on Monday
-
 ;; -- Source Code Blocks
 (setq org-src-preserve-indentation nil)   ;; allow indentation
 (setq org-edit-src-content-indentation 0) ;; relative indent to #+begin_src
@@ -164,11 +157,6 @@
 ;;                              (org-match-string-no-properties 1))))
 ;;           (apply 'delete-region remove)
 ;;           (insert description)))))
-
-;; European calendar please
-(eval-after-load "calendar"
-  '(setq calendar-date-style 'european
-	 diary-date-forms diary-iso-date-forms))
 
 ;; bookmarks
 ;;set the default bookmark file
