@@ -102,9 +102,16 @@
 ;; set default apps
 ;;(setq org-file-apps '(("\\.ods\\'" \.system) (auto-mode . emacs)))
 
-;; include org-babel shell tangling
-;(org-babel-do-load-languages
-; 'org-babel-load-languages '((shell . t)))
+(use-package gnuplot
+  :ensure t)
+
+(use-package gnuplot-mode
+  :ensure t)
+
+;; include org-babel gnuplottangling
+(org-babel-do-load-languages
+ 'org-babel-load-languages
+ '((gnuplot . t)))
 
 (setq org-attach-id-dir "/home/col/data/org-attach"
 	  org-attach-directory "/home/col/data/org-attach"
