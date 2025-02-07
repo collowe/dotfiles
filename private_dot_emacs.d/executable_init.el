@@ -48,6 +48,8 @@
 (require 'my-shell)
 (require 'my-source)
 (require 'my-pdf)
+(require 'my-publish)
+(message "init complete")
 
 (provide 'init)
 ;;; init.el ends here

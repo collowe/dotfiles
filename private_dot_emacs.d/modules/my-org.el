@@ -108,10 +108,14 @@
 (use-package gnuplot-mode
   :ensure t)
 
-;; include org-babel gnuplottangling
+;; include org-babel gnuplot and shell tangling
 (org-babel-do-load-languages
  'org-babel-load-languages
- '((gnuplot . t)))
+ '(
+   (gnuplot . t)
+   (shell . t)
+   )
+ )
 
 (setq org-attach-id-dir "/home/col/data/org-attach"
 	  org-attach-directory "/home/col/data/org-attach"
