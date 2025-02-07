@@ -108,14 +108,10 @@
 (use-package gnuplot-mode
   :ensure t)
 
-<<<<<<< Updated upstream
-;; include org-babel gnuplot and shell tangling
-=======
 ;; add a hook to regenerate images after executing some org-babel
 (add-hook 'org-babel-after-execute-hook 'org-redisplay-inline-images)
 
-;; include org-babel gnuplottangling
->>>>>>> Stashed changes
+;; include org-babel gnuplot and shell tangling
 (org-babel-do-load-languages
  'org-babel-load-languages
  '(
