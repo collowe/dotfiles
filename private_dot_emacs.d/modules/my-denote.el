@@ -42,5 +42,14 @@
   (define-key map (kbd "C-c C-d C-k") #'denote-dired-rename-marked-files-with-keywords)
   (define-key map (kbd "C-c C-d C-R") #'denote-dired-rename-marked-files-using-front-matter))
 
+;; consult-denote
+(use-package consult-denote
+  :after (denote)
+  :ensure t)
+(define-key global-map (kbd "C-c n f") #'consult-denote-find)
+(define-key global-map (kbd "C-c n g") #'consult-denote-grep)
+(consult-denote-mode 1)
+
+
 (provide 'my-denote)
 ;;; my-denote.el ends here
