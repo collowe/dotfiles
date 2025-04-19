@@ -1,0 +1,13 @@
+hide_scroll=true
+lines=8
+line_wrap=word
+term=alacritty
+location=center
+key_expand=Tab
+show=drun
+always_parse_args=true
+show_all=false
+hide_scroll=true
+print_command=true
+insensitive=true
+prompt=
