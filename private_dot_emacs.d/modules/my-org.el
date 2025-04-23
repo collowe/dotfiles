@@ -13,11 +13,14 @@
   (setq org-log-done 'time)
   (setq org-log-into-drawer t)
   (setq org-return-follows-link t)
-  (setq org-agenda-files (list "~/org/tasks"))
+ ;; (setq org-agenda-files (list "~/org/tasks"))
   (setq org-agenda-window-setup 'current-window)
   (setq org-hide-leading-stars t)
   (setq org-adapt-indentation t)     ; indent content under headers
   (setq org-hide-emphasis-markers t) ; hide text format markers
+
+  (defvar cl/base-agenda-files '("~/org/tasks")
+	"The base agenda files that will always be included.")
   
   (setq org-agenda-custom-commands
 	`(("d" "Daily Agenda and High Priority Tasks"

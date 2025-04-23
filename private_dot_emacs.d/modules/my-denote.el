@@ -50,6 +50,20 @@
 (define-key global-map (kbd "C-c n g") #'consult-denote-grep)
 (consult-denote-mode 1)
 
+(defun cl/refresh-agenda-files ()
+  (interactive)
+  (setq org-agenda-files
+		(append (denote-directory-files "_pra")
+				cl/base-agenda-files)))
+
+(with-eval-after-load 'denote
+
+  ;; Refresh agenda files the first time
+  (cl/refresh-agenda-files)
+
+  ;; Update agenda files after notes are created or renamed
+  (add-hook 'denote-after-rename-file-hook #'cl/refresh-agenda-files)
+  (add-hook 'denote-after-new-note-hook #'cl/refresh-agenda-files))
 
 (provide 'my-denote)
 ;;; my-denote.el ends here
