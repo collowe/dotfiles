@@ -13,15 +13,23 @@
   (setq org-log-done 'time)
   (setq org-log-into-drawer t)
   (setq org-return-follows-link t)
- ;; (setq org-agenda-files (list "~/org/tasks"))
   (setq org-agenda-window-setup 'current-window)
   (setq org-hide-leading-stars t)
-  (setq org-adapt-indentation t)     ; indent content under headers
-  (setq org-hide-emphasis-markers t) ; hide text format markers
+  (setq org-adapt-indentation t)            ; indent content under headers
+  (setq org-hide-emphasis-markers t)        ; hide text format markers
+  (setq org-agenda-skip-deadline-if-done t) ; don't show deadlines if done
 
+  ;; remove category/filename from org-agenda entries
+  (setq org-agenda-prefix-format
+		'((agenda . " %i %?-12t% s")  ; Only shows indicators, time of day, and extra info
+		  (todo . " %i ")             ; Only shows indicators for TODOs
+          (tags . " %i ")             ; Only shows indicators for tagged items
+          (search . " %i ")))         ; Only shows indicators for search results
+
+  ;; define the agenda files that are always included in the agenda
   (defvar cl/base-agenda-files '("~/org/tasks")
 	"The base agenda files that will always be included.")
-  
+
   (setq org-agenda-custom-commands
 	`(("d" "Daily Agenda and High Priority Tasks"
 	   ((tags-todo "+PRIORITY=\"A\""
@@ -71,7 +79,6 @@
                 (org-deadline-warning-days 0)
                 (org-agenda-block-separator nil)
                 (org-agenda-entry-types '(:deadline))
-                (org-agenda-skip-function '(org-agenda-skip-entry-if 'todo 'done))
                 (org-agenda-overriding-header "\nUpcoming deadlines (+14d)\n")))
 	    (todo "HOLD"
 		  ((org-agenda-overriding-header "Blocked Tasks")
