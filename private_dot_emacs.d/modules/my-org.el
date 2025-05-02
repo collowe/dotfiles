@@ -35,54 +35,55 @@
 	   ((tags-todo "+PRIORITY=\"A\""
                ((org-agenda-skip-function '(org-agenda-skip-entry-if 'scheduled))
                 (org-agenda-block-separator nil)
-                (org-agenda-overriding-header "Important tasks without a date\n")))
+                (org-agenda-overriding-header "Important tasks without a date")))
 	    ; show overdue items separately
 	    (agenda "" ((org-agenda-overriding-header "\nOverdue Tasks")
-	     (org-agenda-start-day "-1d")
-             (org-agenda-time-grid nil)
-             (org-agenda-start-on-weekday nil)
-             (org-agenda-show-all-dates nil)
-             (org-agenda-format-date "")  ;; Skip the date
-             (org-agenda-span 1)
-             (org-agenda-skip-function '(org-agenda-skip-entry-if 'todo 'done))
-             (org-agenda-entry-types '(:deadline :scheduled))
-             (org-scheduled-past-days 999)
-             (org-deadline-past-days 999)
-	     (org-agenda-include-diary nil)
-	     (org-agenda-block-separator nil)
-             (org-deadline-warning-days 0)))
+					(org-agenda-start-day "-1d")
+					(org-agenda-time-grid nil)
+					(org-agenda-start-on-weekday nil)
+					(org-agenda-show-all-dates nil)
+					(org-agenda-format-date "")  ;; Skip the date
+					(org-agenda-span 1)
+					(org-agenda-skip-function '(org-agenda-skip-entry-if 'todo 'done))
+					(org-agenda-entry-types '(:deadline :scheduled))
+					(org-scheduled-past-days 999)
+					(org-deadline-past-days 999)
+					(org-agenda-include-diary nil)
+					(org-agenda-block-separator nil)
+					(org-deadline-warning-days 0)))
 	    
 	     ; following section from Prot's config - https://github.com/protesilaos/dotfiles/blob/master/emacs/.emacs.d/prot-lisp/prot-org.el
 	     ; and https://protesilaos.com/codelog/2021-12-09-emacs-org-block-agenda/
-	     (agenda "" ((org-agenda-span 1)      ; today only
-                (org-deadline-warning-days 0)     ; remove any deadline warnings
-                (org-agenda-block-separator nil)  ; remove separators between sections
-                (org-scheduled-past-days 0)       ; remove any scheduled in the past
-                (org-agenda-day-face-function (lambda (date) 'org-agenda-date))
-                (org-agenda-format-date "%A %-e %B %Y")
-                (org-agenda-overriding-header "\nToday's agenda\n")))
-	     (agenda "" ((org-agenda-start-on-weekday nil)
-                (org-agenda-start-day nil)
-                (org-agenda-start-day "+1d")
-                (org-agenda-span 3)
-                (org-deadline-warning-days 0)
-                (org-agenda-block-separator nil)
-                (org-agenda-skip-function '(org-agenda-skip-entry-if 'todo 'done))
-                (org-agenda-overriding-header "\nNext three days\n")))
-	     (agenda "" ((org-agenda-time-grid nil)
-                (org-agenda-start-on-weekday nil)
-                ;; We don't want to replicate the previous section's
-                ;; three days, so we start counting from the day after.
-                (org-agenda-start-day "+4d")
-                (org-agenda-span 14)
-                (org-agenda-show-all-dates nil)
-                (org-deadline-warning-days 0)
-                (org-agenda-block-separator nil)
-                (org-agenda-entry-types '(:deadline))
-                (org-agenda-overriding-header "\nUpcoming deadlines (+14d)\n")))
+	    (agenda "" ((org-agenda-span 1)      ; today only
+					(org-deadline-warning-days 0)     ; remove any deadline warnings
+					(org-agenda-block-separator nil)  ; remove separators between sections
+					(org-scheduled-past-days 0)       ; remove any scheduled in the past
+					(org-agenda-day-face-function (lambda (date) 'org-agenda-date))
+					(org-agenda-format-date "%A %-e %B %Y")
+					(org-agenda-overriding-header "\nToday's agenda\n")))
+	    (agenda "" ((org-agenda-start-on-weekday nil)
+					(org-agenda-start-day nil)
+					(org-agenda-start-day "+1d")
+					(org-agenda-span 3)
+					(org-deadline-warning-days 0)
+					(org-agenda-block-separator nil)
+					(org-agenda-skip-function '(org-agenda-skip-entry-if 'todo 'done))
+					(org-agenda-overriding-header "\nNext three days\n")))
+	    (agenda "" ((org-agenda-time-grid nil)
+					(org-agenda-start-on-weekday nil)
+					;; We don't want to replicate the previous section's
+					;; three days, so we start counting from the day after.
+					(org-agenda-start-day "+4d")
+					(org-agenda-span 14)
+					(org-agenda-show-all-dates nil)
+					(org-deadline-warning-days 0)
+					(org-agenda-block-separator nil)
+					(org-agenda-entry-types '(:deadline))
+					(org-agenda-overriding-header "\nUpcoming deadlines (+14d)\n")))
 	    (todo "HOLD"
-		  ((org-agenda-overriding-header "Blocked Tasks")
-		   (org-agenda-max-todos nil)))
+			  ((org-agenda-overriding-header "Blocked Tasks")
+			   (org-agenda-max-todos nil)
+			   (org-agenda-block-separator nil)))
 	    ))))
  
   (setq org-capture-templates
