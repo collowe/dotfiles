@@ -28,7 +28,18 @@ font pango:iosveka 12
 exec wl-paste -t text --watch clipman store
 exec wl-paste -p -t text --watch clipman store -P --histpath="~/.local/share/clipman-primary.json"
 
-# NetworkManager is the most popular way to manage wireless networks on Linux,
+# rot8 for rotation
+input 1118:2463:IPTS_045E:099F_Touchscreen map_to_output eDP-1
+input 1118:2463:IPTSD_Virtual_Touchscreen_045E:099F map_to_output eDP-1
+input 1118:2463:IPTS_045E:099F_Stylus map_to_output eDP-1
+input 1118:2463:IPTSD_Virtual_Stylus_045E:099F map_to_output eDP-1
+
+exec /home/col/.cargo/bin/rot8 --display eDP-1
+bindswitch tablet:on exec echo 'tablet mode'
+#bindswitch tablet:on exec 'wvkbd-mobintl &'
+#exec /home/col/.cargo/bin/rot8 --touchscreen '1118:2463:IPTS_045E:099F_Touchscreen' '1118:2463:IPTSD_Virtual_Touchscreen_045E:099F ''1118:2463:IPTS_045E:099F_Stylus' '1118:2463:IPTSD_Virtual_Stylus_045E:099F'
+
+# Networkmanager is the most popular way to manage wireless networks on Linux,
 # and nm-applet is a desktop environment-independent system tray GUI for it.
 #exec --no-startup-id nm-applet
 

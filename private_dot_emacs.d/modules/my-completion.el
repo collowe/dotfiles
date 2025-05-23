@@ -9,19 +9,33 @@
   :ensure t
   :init (vertico-mode))
 
-; fuzzy matching in completion
-(use-package orderless
-  :ensure t
-  :custom
-  (orderless-matching-styles '(orderless-literal orderless-regexp orderless-flex))
-  (completion-styles '(orderless basic))
-  (completion-category-overrides '((file (styles partial-completion)))))
-
 ; adds detail to completions
+; https://github.com/minad/marginalia
 (use-package marginalia
   :ensure t
   :init
   (marginalia-mode))
+
+;; built in completion preview
+;; https://eshelyaron.com/posts/2023-11-17-completion-preview-in-emacs.html
+(use-package completion-preview
+  :ensure nil
+  :bind
+  (:map completion-preview-active-mode-map
+			  ("M-n" . #'completion-preview-next-candidate)
+			  ("M-p" . #'completion-preview-prev-candidate))
+  :custom
+  (completion-preview-minimum-symbol-length 2)
+  :init
+  (global-completion-preview-mode))
+
+;; https://github.com/justbur/emacs-which-key
+;; built in, just enable it
+(use-package which-key
+  :ensure nil
+  :init
+  (which-key-mode 1)
+)
 
 ;; https://github.com/minad/consult
 (use-package consult
@@ -53,80 +67,8 @@
    ("M-s k" . consult-keep-lines)
    ("M-s u" . consult-focus-lines)
   )
-
-  ;; Enable automatic preview at point in the *Completions* buffer. This is
-  ;; relevant when you use the default completion UI.
-  ;:hook (completion-list-mode . consult-preview-at-point-mode)
-
   ;; The :init configuration is always executed (Not lazy)
   :init
-  
-  :config
-  ;; Use `consult-completion-in-region' if Vertico is enabled.
-  ;; Otherwise use the default `completion--in-region' function.
-  (setq completion-in-region-function
-        (lambda (&rest args)
-          (apply (if vertico-mode
-                   #'consult-completion-in-region)
-                   ;;#'completion--in-region)
-                 args)))
-)
-
-; in region completions with Corfu
-;; (use-package corfu
-;;   :ensure t
-;;   :after orderless
-;;   :custom
-;;   ;; (corfu-min-width 80)
-;;   ;; (corfu-max-width corfu-min-width)
-;;   (corfu-count 5)
-;;   ;; (corfu-scroll-margin 4)
-;;   (corfu-cycle t)              ;; Enable cycling for `corfu-next/previous'
-;;   (corfu-auto t)               ;; Enable auto completion
-;;   (corfu-auto-prefix 2)
-;;   (corfu-auto-delay 0.0)
-;;   (corfu-separator ?\s)
-;;   ;; (corfu-quit-at-boundary nil)
-;;   ;; (corfu-quit-no-match t)
-;;   ;; (corfu-preview-current nil)
-;;   ;; (corfu-preselect-first t)
-;;   ;; (corfu-on-exact-match t)
-;;   ;; (corfu-echo-documentation nil)
-;;   ;; (corfu-popupinfo-mode 1)
-;;   ;;:hook ((prog-mode . corfu-mode)
-;; ;;		 (shell-mode . corfu-mode)
-;;  ;;        (eshell-mode . corfu-mode))
-;;   (setq global-corfu-modes '(:not chatgpt-shell-mode))
-;;   :init
-;;   (global-corfu-mode)          ;; enable corfu globally
-;;   (corfu-history-mode)         ;; enable corfu history mode
-;;   :config
-;;   ;; (add-hook 'eshell-mode-hook
-;;   ;;			(lambda() (setq-local corfu-quit-at-boundary t
-;;   ;;								  corfu-quit-no-match t
-;;   ;;								  corfu-auto nil)
-;;   ;;			  (corfu-mode))
-;;   ;;nil
-;;   ;;t)
-;; )
-
-(use-package kind-icon
-  :ensure t
-  :if (display-graphic-p)
-  :after corfu
-  :custom
-  (kind-icon-use-icons t)
-  (kind-icon-default-face 'corfu-default)
-  (kind-icon-blend-background nil)
-  (kind-icon-blend-frac 0.08)
-  :config
-  (add-to-list 'corfu-margin-formatters #'kind-icon-margin-formatter))
-
-;; https://github.com/justbur/emacs-which-key
-(use-package which-key
-  :ensure t
-  :init
-  (which-key-mode 1)
 )
 
 (provide 'my-completion)

@@ -8,7 +8,8 @@
   :ensure t
   :config
   (setq mastodon-instance-url "https://hachyderm.io"
-		mastodon-active-user "clowe"))
+		mastodon-active-user "clowe"
+		mastodon-auth-use-auth-source nil))
 
 ;; ;;  Ement - matrix client.
 ;; ;; (use-package ement

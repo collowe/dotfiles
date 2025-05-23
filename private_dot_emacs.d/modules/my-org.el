@@ -2,6 +2,7 @@
 ;;; Commentary:
 ; Org-Mode functions and declarations
 
+
 ;;; Code:
 (use-package org
   :init

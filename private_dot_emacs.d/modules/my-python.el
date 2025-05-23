@@ -77,9 +77,9 @@
 (defalias 'start-lsp-server #'eglot)
 
 ;;--- flycheck --- (syntax highlighting, uses pylint installed using pip)
-(use-package flycheck
-  :ensure t
-  :init (global-flycheck-mode))
+;; (use-package flycheck
+;;   :ensure t
+;;   :init (global-flycheck-mode))
 
 ;; --- YAML ---
 (use-package yaml-mode
