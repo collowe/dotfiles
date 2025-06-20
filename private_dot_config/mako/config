@@ -1,0 +1,26 @@
+# Take a look at the mako manpage with the command:
+#   man 5 mako
+# To view all configuration options.
+
+sort=-time
+font=iosevka 12
+border-size=2
+padding=10,10
+border-radius=4
+margin=4
+
+background-color=#1f2335
+text-color=#c0caf5
+border-color=#7aa2f7
+
+[urgency=low]
+border-color=#7aa2f7
+default-timeout=5000
+
+[urgency=normal]
+border-color=#9ece6a
+default-timeout=7000
+
+[urgency=high]
+border-color=#f7768e
+default-timeout=0
