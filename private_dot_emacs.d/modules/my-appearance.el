@@ -36,7 +36,25 @@
 ;; git clone --depth 1 https://github.com/protesilaos/aporetic
 ;; copy ttf to /usr/share/fonts
 ;; fc-cache
-(set-frame-font "Aporetic Sans" nil t)
+(set-frame-font "Aporetic Serif Mono-14" nil t)
+
+;; set variable and fixed pitch fonts
+;; Proportional font for variable-pitch
+(set-face-attribute 'variable-pitch nil :family "Aporetic Serif" :height 140)
+;; Monospace font for fixed-pitch
+(set-face-attribute 'fixed-pitch nil :family "Aporetic Serif Mono" :height 140)
+
+;; set variable pitch fonts for org-mode, elfeed show mode and eww
+(add-hook 'org-mode-hook 'variable-pitch-mode)
+(add-hook 'elfeed-show-mode-hook #'variable-pitch-mode)
+(add-hook 'eww-mode-hook #'variable-pitch-mode)
+
+;; increase the line spacing for text mode (org-mode, markdown)
+(add-hook 'text-mode-hook (lambda ()
+                            (setq-local line-spacing 0.1)))
+
+;; abcdef
+;; 123456
 
 ;; https://github.com/integral-dw/org-superstar-mode
 ;(use-package org-superstar
