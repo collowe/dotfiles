@@ -12,16 +12,16 @@ scrolling:
 
 font:
   normal:
-    family: Iosevka Light
+    family: Fira Code
     style: Regular
   bold:
-    family: Iosevka Term Medium
+    family: Fira Code
     style: Bold
   italic:
-    family: Iosevka Term Medium
+    family: Fira Code
     style: Italic
   bold_italic:
-    family: Iosevka Term Medium
+    family: Fira Code
     style: Bold Italic
   size: 14
   builtin_box_drawing: true

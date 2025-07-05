@@ -33,7 +33,10 @@
 (define-key global-map (kbd "<f5>") #'modus-themes-toggle)
   
 ;; set default font
-(set-frame-font "Iosevka Light 16" nil t)
+;; git clone --depth 1 https://github.com/protesilaos/aporetic
+;; copy ttf to /usr/share/fonts
+;; fc-cache
+(set-frame-font "Aporetic Sans" nil t)
 
 ;; https://github.com/integral-dw/org-superstar-mode
 ;(use-package org-superstar
