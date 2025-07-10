@@ -66,6 +66,8 @@
    ("M-s m" . consult-multi-occur)
    ("M-s k" . consult-keep-lines)
    ("M-s u" . consult-focus-lines)
+   :map consult-narrow-map
+   ("?" . consult-narrow-help)
   )
   ;; The :init configuration is always executed (Not lazy)
   :init
