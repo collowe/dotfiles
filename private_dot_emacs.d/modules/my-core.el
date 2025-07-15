@@ -45,17 +45,15 @@
 ; line wrap
 (global-visual-line-mode 1)
 
-; highlight current line
-(global-hl-line-mode 1)
-
 ;; Enable electric-pair mode for automatic pairing of brackets and quotes
 (electric-pair-mode 1)
 
 ;; Show matching parentheses
 (show-paren-mode 1)
 
-;; Highlight current line
-(global-hl-line-mode 1)
+;; Highlight current line for programming and text modes
+(add-hook 'prog-mode-hook #'hl-line-mode)
+(add-hook 'text-mode-hook #'hl-line-mode)
 
 ;; Enable clipboard integration with system
 (setq select-enable-clipboard t)
