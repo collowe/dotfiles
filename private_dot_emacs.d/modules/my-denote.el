@@ -28,8 +28,8 @@
   (define-key map (kbd "C-c n i") #'denote-link) ; "insert" mnemonic
   (define-key map (kbd "C-c n I") #'denote-add-links)
   (define-key map (kbd "C-c n b") #'denote-backlinks)
-  (define-key map (kbd "C-c n f f") #'denote-find-link)
-  (define-key map (kbd "C-c n f b") #'denote-find-backlink)
+  ;;(define-key map (kbd "C-c n f f") #'denote-find-link)
+  ;;(define-key map (kbd "C-c n f b") #'denote-find-backlink)
   ;; Note that `denote-rename-file' can work from any context, not just
   ;; Dired bufffers.  That is why we bind it here to the `global-map'.
   (define-key map (kbd "C-c n r") #'denote-rename-file)

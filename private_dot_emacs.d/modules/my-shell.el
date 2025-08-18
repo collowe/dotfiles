@@ -49,6 +49,9 @@ With a prefix argument, exit eshell before restoring previous config."
     :bind
     ("<f7>" . vterm))
 
+;; set vterm shell to be zsh
+(setq vterm-shell "/usr/bin/zsh")
+
 ;; history autosuggestions
 ;;(use-package capf-autosuggest
 ;;  :ensure t
