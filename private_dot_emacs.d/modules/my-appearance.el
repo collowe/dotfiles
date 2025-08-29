@@ -9,6 +9,10 @@
 ;  :config
 ;  (ef-themes-select 'ef-elea-dark))
 
+; run fullscreen
+;(setq ns-use-native-fullscreen :true)
+(add-to-list 'default-frame-alist '(fullscreen . maximized))
+
 ;; disable any active themes
 (mapc #'disable-theme custom-enabled-themes)
 
@@ -36,7 +40,8 @@
 ;; git clone --depth 1 https://github.com/protesilaos/aporetic
 ;; copy ttf to /usr/share/fonts
 ;; fc-cache
-(set-frame-font "Aporetic Serif Mono-14" nil t)
+;(set-frame-font "Aporetic Serif Mono-12" nil t)
+;(add-to-list 'default-frame-alist '(font . "Aporetic Serif Mono-18"))
 
 ;; set variable and fixed pitch fonts
 ;; Proportional font for variable-pitch
@@ -44,14 +49,29 @@
 ;; Monospace font for fixed-pitch
 (set-face-attribute 'fixed-pitch nil :family "Aporetic Serif Mono" :height 140)
 
+;; set fonts - required this way for emacs client
+(defun my/set-fonts (frame)
+  (with-selected-frame frame
+    (set-face-attribute 'default frame :family "Aporetic Serif Mono" :height 140)
+    (set-face-attribute 'fixed-pitch frame :family "Aporetic Serif Mono" :height 140)
+    (set-face-attribute 'variable-pitch frame :family "Aporetic Serif" :height 140)))
+
+(add-hook 'after-make-frame-functions #'my/set-fonts)
+(my/set-fonts (selected-frame))
+
 ;; set variable pitch fonts for org-mode, elfeed show mode and eww
-(add-hook 'org-mode-hook 'variable-pitch-mode)
+(add-hook 'org-mode-hook #'variable-pitch-mode)
 (add-hook 'elfeed-show-mode-hook #'variable-pitch-mode)
 (add-hook 'eww-mode-hook #'variable-pitch-mode)
 
+;; set specific elements to be fixed width
+(set-face-attribute 'org-table nil :inherit 'fixed-pitch)
+(set-face-attribute 'org-block nil :inherit 'fixed-pitch)
+(set-face-attribute 'org-code nil :inherit 'fixed-pitch)
+(set-face-attribute 'org-verbatim nil :inherit 'fixed-pitch)
+
 ;; increase the line spacing for text mode (org-mode, markdown)
-(add-hook 'text-mode-hook (lambda ()
-                            (setq-local line-spacing 0.1)))
+(add-hook 'text-mode-hook (lambda () (setq-local line-spacing 0.1)))
 
 ;; abcdef
 ;; 123456
