@@ -13,6 +13,10 @@
 ;(setq ns-use-native-fullscreen :true)
 (add-to-list 'default-frame-alist '(fullscreen . maximized))
 
+;; remove the title bar (annoying in gnome)
+(add-to-list 'default-frame-alist '(undecorated . t))
+;;(setopt default-frame-alist '((undecorated . t)))
+
 ;; disable any active themes
 (mapc #'disable-theme custom-enabled-themes)
 
