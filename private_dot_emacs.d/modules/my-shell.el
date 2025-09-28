@@ -39,15 +39,20 @@ With a prefix argument, exit eshell before restoring previous config."
 
 ;; vterm shell package
 (use-package vterm
-    :commands vterm
-    :custom
-    (vterm-always-compile-module t)
-    :hook
-	(vterm-mode-hook . (lambda ()
-						 (set (make-local-variable 'buffer-face-mode-face) 'fixed-pitch)
-						 (buffer-face-mode t)))
-    :bind
-    ("<f7>" . vterm))
+  :commands vterm
+  :config
+  (setq vterm-max-scrollback 10000) ;; increase scrollback from default of 1000
+  :custom
+  (vterm-always-compile-module t)
+  :hook
+  (vterm-mode-hook . (lambda ()
+					   (set (make-local-variable 'buffer-face-mode-face) 'fixed-pitch)
+					   (buffer-face-mode t)
+					   (setq-local global-hl-line-mode nil)
+					   ))
+  (vterm-copy-mode . (lambda () (call-interactively 'hl-line-mode)))
+  :bind
+  ("<f7>" . vterm))
 
 ;; set vterm shell to be zsh
 (setq vterm-shell "/usr/bin/zsh")
