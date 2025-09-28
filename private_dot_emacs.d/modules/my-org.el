@@ -32,7 +32,13 @@
 	"The base agenda files that will always be included.")
 
   (setq org-agenda-custom-commands
-	`(("d" "Daily Agenda and High Priority Tasks"
+		`(("n" "Next Tasks"
+		   todo "NEXT"
+			  ((org-agenda-overriding-header "Next Tasks")
+			   (org-agenda-max-todos nil)
+			   (org-agenda-block-separator nil))
+		   )
+	  ("d" "Daily Agenda and High Priority Tasks"
 	   ((tags-todo "+PRIORITY=\"A\""
                ((org-agenda-skip-function '(org-agenda-skip-entry-if 'scheduled))
                 (org-agenda-block-separator nil)
