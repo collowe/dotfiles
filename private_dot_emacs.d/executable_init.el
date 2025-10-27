@@ -49,6 +49,9 @@
 (require 'my-source)
 (require 'my-pdf)
 (require 'my-publish)
+(when (my/aws-instance-p)
+  (message "work instance, loading work config")
+  (require 'my-devops))
 (message "init complete")
 
 (provide 'init)

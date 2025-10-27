@@ -4,8 +4,8 @@
 
 ;;; Code:
 ;; https://github.com/magit/magit.git
-;; (use-package magit
-;;   :ensure t))
+(use-package magit
+  :ensure t)
 
 ;; https://github.com/tuh8888/chezmoi.el
 (use-package chezmoi
