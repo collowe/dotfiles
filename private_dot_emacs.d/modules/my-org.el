@@ -31,6 +31,13 @@
   (defvar cl/base-agenda-files '("~/org/tasks")
 	"The base agenda files that will always be included.")
 
+  (defun cl/denote-journal-path ()
+	"Returns the journal filename with the correct file extension."
+	(let ((filename (denote-journal-path-to-new-or-existing-entry)))
+      ;; Ensure the correct file extension is used if needed,
+      ;; though denote-journal-path-to-new-or-existing-entry often handles this.
+      filename))  
+  
   (setq org-agenda-custom-commands
 		`(("n" "Next Tasks"
 		   todo "NEXT"
@@ -100,8 +107,11 @@
 	   (file+olp+datetree, (concat org-directory "/notes/bookmarks/bookmarks.org") "Capture")
 	   "** %(org-cliplink-capture)%?\n" :unnarrowed t)
 	  ("m" "meeting" entry
-	   (file+headline, (concat org-directory "/tasks/inbox.org") "Capture")
-	   "** Meeting: %^{SUBJECT}%? \n%^T\n*** Attendees\n*** Notes\n\n" :empty-lines 1)
+	   (file+headline cl/denote-journal-path "Meetings")
+       ;; Template content
+	   ;;"* %^{Meeting Title}\n:PROPERTIES:\n:Date: %<%Y-%m-%d %H:%M>\n:END:\n\n%?"
+	   "** %^{SUBJECT}%? \n%^T\n*** Attendees\n*** Notes\n\n"	   
+       :empty-lines 1)
 	  ("p" "phone call" entry
 	   (file+headline, (concat org-directory "/tasks/inbox.org") "Capture")
 	   "** Phone %^{person} \n%U\n*** Notes\n\n" :empty-lines 1)))

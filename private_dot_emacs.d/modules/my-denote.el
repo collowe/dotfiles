@@ -10,7 +10,9 @@
   :init
   (setq denote-directory (expand-file-name "~/org/notes")
 	denote-known-keywords '("emacs")
-	denote-sort-keywords t))
+	denote-sort-keywords t
+	denote-date-prompt-use-org-read-date t
+	))
 
 ;; Denote key bindings.  
 (let ((map global-map))
@@ -64,6 +66,24 @@
   ;; Update agenda files after notes are created or renamed
   (add-hook 'denote-after-rename-file-hook #'cl/refresh-agenda-files)
   (add-hook 'denote-after-new-note-hook #'cl/refresh-agenda-files))
+
+
+;; --- Add denote-journal integration ---
+(use-package denote-journal
+  :ensure t
+  :after denote
+  :config
+  ;; Use the same directory as denote or a subfolder
+  (setq denote-journal-directory (expand-file-name "journal" denote-directory)
+		denote-journal-title-format 'day-date-month-year
+        ;;denote-journal-date-format "%Y-%m-%d"
+        ;;denote-journal-template "* Journal Entry\n\nDate: %<%Y-%m-%d>\n\n---\n\n"
+		denote-journal-keyword "journal")
+
+  ;; Keybinding for creating today's journal entry
+  (define-key global-map (kbd "C-c n j") #'denote-journal-new-or-existing-entry))
+
+  (add-hook 'calendar-mode-hook #'denote-journal-calendar-mode)
 
 (provide 'my-denote)
 ;;; my-denote.el ends here
