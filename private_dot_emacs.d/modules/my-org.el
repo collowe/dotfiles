@@ -108,8 +108,6 @@
 	   "** %(org-cliplink-capture)%?\n" :unnarrowed t)
 	  ("m" "meeting" entry
 	   (file+headline cl/denote-journal-path "Meetings")
-       ;; Template content
-	   ;;"* %^{Meeting Title}\n:PROPERTIES:\n:Date: %<%Y-%m-%d %H:%M>\n:END:\n\n%?"
 	   "** %^{SUBJECT}%? \n%^T\n*** Attendees\n*** Notes\n\n"	   
        :empty-lines 1)
 	  ("p" "phone call" entry
