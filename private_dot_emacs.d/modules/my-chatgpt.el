@@ -24,5 +24,20 @@
   :config
   (ob-chatgpt-shell-setup))
 
+(use-package gptel
+  :ensure t
+  :bind ("C-c RET" . gptel-send)
+  :config
+  (setq gptel-default-mode 'org-mode)
+  (setq gptel-model 'claude-sonnet-4-5-20250929
+		gptel-backend
+		(gptel-make-bedrock "AWS"
+		  :stream t
+		  :region "eu-west-2"
+		  :models '(claude-sonnet-4-5-20250929)
+		  :aws-profile "maritime"
+		  :model-region 'eu)))
+
+
 (provide 'my-chatgpt)
 ;;; my-chatgpt.el ends here
